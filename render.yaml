@@ -52,7 +52,6 @@ services:
   - type: web
     name: meso-tracker-site
     runtime: static
-    plan: free
     rootDir: website
     buildCommand: ""
     staticPublishPath: .
