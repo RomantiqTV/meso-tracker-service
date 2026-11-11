@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meso Tracker - EXP, mesos &amp; item overlay for MapleStory Classic</title>
+<meta name="description" content="A screen-reading overlay for MapleStory Classic that tracks EXP/hr, mesos/hr, items and drop rates per map. Read-only, no game files touched. $1.99/mo.">
+<meta name="meso-api-base" content="https://meso-tracker-api.onrender.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brand">Meso<span>Tracker</span></div>
+    <a href="#pricing" class="btn secondary" style="width:auto;padding:8px 18px;display:inline-block">Get it - $1.99/mo</a>
+  </nav>
+
+  <section class="hero">
+    <h1>Know your rate. Farm smarter.</h1>
+    <p>A small overlay that sits next to MapleStory Classic and reads your EXP, mesos, items and the monsters on your map -
+       so you always know whether a spot is actually worth farming.</p>
+    <img class="hero-shot" src="assets/screenshot.png" alt="Meso Tracker overlay next to its Monsters Here panel, showing EXP/hr, mesos/hr, items picked up and monster drop rates over a live MapleStory Classic game screen">
+  </section>
+
+  <section class="section">
+    <h2>What it does</h2>
+    <div class="features">
+      <div class="feature"><div class="emoji">EXP</div><h3>EXP &amp; mesos per hour</h3>
+        <p>Session and rolling rates, auto-paused when you're idle or in town, so the number is never diluted by AFK time.</p></div>
+      <div class="feature"><div class="emoji">LOOT</div><h3>Every item, correctly named</h3>
+        <p>A closed-vocabulary matcher resolves damaged in-game text against the real item list instead of guessing - garbage
+           names never show up, and it tells you honestly when it isn't sure.</p></div>
+      <div class="feature"><div class="emoji">MAP</div><h3>Monsters Here panel</h3>
+        <p>See every monster on your current map, its level, and its drops with an approximate drop chance - know what a map
+           is good for before you commit to farming it.</p></div>
+      <div class="feature"><div class="emoji">$</div><h3>Net mesos after potions</h3>
+        <p>Tracks what your Q/E potions actually cost and subtracts it, so "net per hour" is the number that matters.</p></div>
+      <div class="feature"><div class="emoji">LOG</div><h3>Per-map history</h3>
+        <p>Every map you farm gets logged with its own EXP/hr and mesos/hr, so you can compare spots later.</p></div>
+      <div class="feature"><div class="emoji">OK</div><h3>Read-only, always</h3>
+        <p>It only looks at your screen. It never touches game files or memory, and never sends a single keystroke or click.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <h2>Pricing</h2>
+    <div class="card pricing-card">
+      <div>Meso Tracker</div>
+      <div class="price">$1.99<span>/month</span></div>
+      <ul>
+        <li>Full overlay, every feature above</li>
+        <li>Free updates while subscribed</li>
+        <li>Cancel any time, no questions asked</li>
+        <li>One PC per subscription (switch any time in Settings)</li>
+      </ul>
+      <form id="buy-form">
+        <input type="email" id="email" placeholder="you@email.com" required>
+        <button type="submit" id="buy-btn" class="btn">Subscribe - $1.99/mo</button>
+        <div id="checkout-error"></div>
+      </form>
+      <p class="note">You'll get your download link and licence key by email right after payment, handled securely by Stripe -
+         this site never sees your card details.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item"><h3>Will this get me banned?</h3>
+      <p>It only reads pixels from your own screen, the same as a screen recorder - it never reads or writes game memory or
+         files, and never sends input. We can't make promises about any game's rules, but there is nothing here that acts on
+         the game, only something that watches your screen.</p></div>
+    <div class="faq-item"><h3>How does the licence work?</h3>
+      <p>One licence runs on one PC at a time. The app fingerprints your PC on first launch; moving to a new PC is a click in
+         Settings ("Deactivate this device"), no email needed.</p></div>
+    <div class="faq-item"><h3>What if I lose my licence key?</h3>
+      <p>Use "Manage billing" with the email you purchased with - it also resends your key.</p></div>
+    <div class="faq-item"><h3>Can I get a refund?</h3>
+      <p>Cancel any time and you won't be charged again; email us for anything else.</p></div>
+  </section>
+</div>
+<footer>
+  <div class="disclaimer">Meso Tracker is an independent, unofficial tool. It is not affiliated with, endorsed by, or
+    associated with Nexon, MapleStory, or MesoWatch. MapleStory is a trademark of its respective owner.</div>
+  &copy; Meso Tracker
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
