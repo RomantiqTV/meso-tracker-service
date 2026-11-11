@@ -9,6 +9,10 @@ from . import email, repo, security
 
 log = logging.getLogger("meso.billing")
 
+# The stripe-python 11.3.0 SDK defaults to an API version that predates "Managed Payments" (now required on new
+# accounts for Checkout Sessions). Pin a version that supports it rather than relying on the SDK's bundled default.
+stripe.api_version = "2025-03-31.basil"
+
 
 def create_checkout_session(settings, customer_email=None):
     stripe.api_key = settings.stripe_secret_key
