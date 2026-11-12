@@ -136,8 +136,8 @@ nav.scrolled .brand span { color: var(--orange); }
 .pricing-card { max-width: 400px; margin: 0 auto; text-align: center; position: relative; overflow: visible; }
 .pricing-card::before {
   content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: 18px;
-  background: conic-gradient(from 0deg, var(--orange-hi), #fff6da, var(--blue), var(--orange-hi));
-  opacity: .55; filter: blur(14px); animation: spin 8s linear infinite;
+  background: radial-gradient(ellipse at 50% 0%, var(--orange-hi), transparent 70%);
+  opacity: .5; filter: blur(16px);
 }
 .pricing-badge {
   position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap;
@@ -209,7 +209,6 @@ footer .disclaimer { max-width: 560px; margin: 0 auto 10px; opacity: .85; }
 /* ----------------------------------------------------------------------------------------------- keyframes */
 @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(31,138,58,.25); } 50% { box-shadow: 0 0 0 6px rgba(31,138,58,0); } }
-@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes slide-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 @keyframes fall { to { transform: translateY(105vh) rotate(380deg); } }
 
