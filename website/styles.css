@@ -41,7 +41,7 @@ a { color: var(--blue); }
 }
 
 /* ---------------------------------------------------------------------------------------------------------- nav */
-.nav-spacer { height: 70px; }
+.nav-spacer { height: 98px; }
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
@@ -53,13 +53,15 @@ nav.scrolled {
   background: rgba(255, 249, 232, .72); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
   box-shadow: 0 2px 18px rgba(59, 29, 6, .12);
 }
-.brand { font-size: 22px; font-weight: 600; color: #fff; text-shadow: 0 2px 0 var(--orange-dk); display: flex; align-items: center; gap: 8px; }
-.brand .coin { width: 22px; height: 22px; border-radius: 50%; display: inline-block;
-  background: radial-gradient(circle at 35% 30%, #fff6da, #ffd873 45%, #e8801c 80%);
-  box-shadow: 0 2px 0 var(--orange-dk), 0 0 10px rgba(255, 198, 92, .7); }
-nav.scrolled .brand { color: var(--orange-dk); text-shadow: none; }
-.brand span { color: var(--orange-hi); }
-nav.scrolled .brand span { color: var(--orange); }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-logo { height: 64px; width: auto; display: block; filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); transition: height .3s ease; }
+nav.scrolled .brand-logo { height: 50px; }
+.brand-tag {
+  font-family: "Nunito", sans-serif; font-size: 12.5px; font-weight: 800; letter-spacing: .02em; white-space: nowrap;
+  color: var(--orange-dk); background: var(--cream-hi); border: 1.5px solid var(--cream-edge); border-radius: 999px;
+  padding: 5px 12px; box-shadow: 0 2px 0 rgba(59,29,6,.1);
+}
+@media (max-width: 560px) { .brand-tag { display: none; } }
 
 /* -------------------------------------------------------------------------------------------------------- hero */
 .hero { position: relative; text-align: center; padding: 86px 0 20px; color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.2); }
@@ -89,20 +91,6 @@ nav.scrolled .brand span { color: var(--orange); }
 .hero-shot-frame:hover .hero-shot { transform: perspective(1000px) rotateX(0deg) translateY(-4px); }
 .hero-shot-glow { position: absolute; inset: -30px; z-index: -1; background: radial-gradient(ellipse at 50% 55%, rgba(255,198,92,.55), transparent 65%); filter: blur(10px); }
 
-/* ------------------------------------------------------------------------------------------------- live HUD demo */
-.hud-demo {
-  max-width: 420px; margin: 34px auto 0; text-align: left; border-radius: 14px; padding: 14px 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
-  border: 1.5px solid rgba(255,255,255,.35); backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px -12px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.3);
-}
-.hud-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: 14px; }
-.hud-row + .hud-row { border-top: 1px dashed rgba(255,255,255,.25); }
-.hud-label { opacity: .85; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-.hud-label .sw { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
-.hud-value { font-variant-numeric: tabular-nums; font-weight: 800; color: var(--orange-hi); text-shadow: 0 1px 0 rgba(0,0,0,.3); }
-.hud-value.green { color: #1a7a33; }
-
 /* ------------------------------------------------------------------------------------------------------ sections */
 .card {
   background: var(--cream-glass); border: 2px solid var(--cream-edge); border-radius: 16px; padding: 26px;
@@ -113,27 +101,14 @@ nav.scrolled .brand span { color: var(--orange); }
 .section h2 { color: var(--orange-dk); font-size: clamp(24px, 3.4vw, 30px); text-align: center; margin: 0 0 8px; }
 .section .subhead { text-align: center; color: var(--muted); font-weight: 400; font-size: 15px; max-width: 480px; margin: 0 auto 30px; }
 
-.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
-.feature {
-  background: var(--cream-glass); border: 2px solid var(--cream-edge); border-radius: 14px; padding: 20px;
-  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease;
-  box-shadow: 0 6px 0 rgba(59,29,6,.08);
-  will-change: transform;
+.feature-split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: start; max-width: 940px; margin: 0 auto; }
+.feature-main {
+  background: var(--cream-glass); border: 2px solid var(--cream-edge); border-radius: 16px; padding: 24px;
+  box-shadow: 0 10px 26px -10px var(--shadow-ink);
 }
-.feature:hover {
-  transform: translateY(-6px) rotate(-0.4deg); border-color: var(--orange);
-  box-shadow: 0 16px 28px -14px var(--shadow-ink), 0 0 0 3px rgba(232,128,28,.12);
-}
-.feature h3 { margin: 0 0 6px; color: var(--orange-dk); font-size: 17px; }
-.feature p { margin: 0; font-size: 14px; color: var(--muted); font-weight: 400; line-height: 1.5; }
-.feature .badge {
-  display: inline-flex; align-items: center; justify-content: center; min-width: 46px; height: 32px; padding: 0 10px;
-  margin-bottom: 10px; border-radius: 9px; font-size: 12px; font-weight: 800; letter-spacing: .03em; color: #fff;
-  background: linear-gradient(180deg, var(--orange-hi), var(--orange)); box-shadow: 0 3px 0 var(--orange-dk);
-}
-/* The one feature that's genuinely different in kind (a live per-monster drop table, not a one-line stat) gets more
-   room and a real preview instead of another icon+heading+text tile, so the grid isn't six identical boxes. */
-.feature.wide { grid-column: span 2; }
+.feature-main h3 { margin: 0 0 6px; color: var(--orange-dk); font-size: 19px; }
+.feature-main p { margin: 0; font-size: 14px; color: var(--muted); font-weight: 400; line-height: 1.5; }
+
 .drop-preview {
   margin-top: 14px; border: 1.5px solid var(--cream-edge); border-radius: 10px; overflow: hidden; background: var(--cream-hi);
 }
@@ -144,7 +119,60 @@ nav.scrolled .brand span { color: var(--orange); }
 .drop-row .drop-chance { color: var(--green); min-width: 52px; text-align: right; }
 .drop-row .drop-item { flex: 1.4; color: var(--muted); font-weight: 400; text-align: right; }
 .drop-row.dim { opacity: .55; }
-@media (max-width: 640px) { .feature.wide { grid-column: span 1; } }
+
+.feature-list { list-style: none; margin: 4px 0 0; padding: 0; }
+.feature-list li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; }
+.feature-list li + li { border-top: 1px dashed var(--cream-edge); }
+.feature-list .dot { flex: none; width: 11px; height: 11px; margin-top: 5px; border-radius: 50%; box-shadow: 0 1px 0 rgba(59,29,6,.25); }
+.feature-list strong { display: block; color: var(--ink); font-size: 15.5px; font-weight: 800; }
+.feature-list p { margin: 2px 0 0; font-size: 13.5px; color: var(--muted); font-weight: 400; line-height: 1.4; }
+@media (max-width: 720px) { .feature-split { grid-template-columns: 1fr; } }
+
+/* --------------------------------------------------------------------------------------------------------- tech */
+.tech-statement {
+  text-align: center; font-family: "Fredoka", sans-serif; font-size: clamp(22px, 3.6vw, 34px);
+  color: var(--orange-dk); max-width: 620px; margin: 6px auto 22px; line-height: 1.25;
+}
+.tech-statement .accent {
+  color: var(--orange); position: relative; display: inline-block;
+}
+.tech-statement .accent::after {
+  content: ""; position: absolute; left: 2px; right: 2px; bottom: -2px; height: 7px; border-radius: 4px;
+  background: var(--orange-hi); opacity: .55; z-index: -1;
+}
+.tech-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 640px; margin: 0 auto 36px; }
+.tech-tag {
+  font-size: 13px; font-weight: 800; letter-spacing: .01em; color: var(--orange-dk); padding: 9px 16px; border-radius: 999px;
+  background: var(--cream-glass); border: 2px solid var(--cream-edge);
+  box-shadow: 0 4px 0 rgba(59,29,6,.08);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, border-color .25s ease;
+}
+.tech-tag:hover { transform: translateY(-3px); border-color: var(--orange); box-shadow: 0 8px 14px -8px var(--shadow-ink); }
+
+.compare-table {
+  max-width: 880px; margin: 0 auto; border-radius: 14px; overflow: hidden;
+  background: var(--cream-glass); border: 2px solid var(--cream-edge); backdrop-filter: blur(6px);
+  box-shadow: inset 0 2px 0 var(--cream-hi), 0 10px 26px -10px var(--shadow-ink);
+}
+.compare-row {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; align-items: center;
+}
+.compare-row > div { padding: 12px 10px; font-size: 13.5px; }
+.compare-row > [role="rowheader"] { font-weight: 700; color: var(--ink); text-align: left; padding-left: 16px; }
+.compare-row:not(.compare-head) { border-top: 1px dashed var(--cream-edge); }
+.compare-row > div:not([role="rowheader"]) { text-align: center; color: var(--muted); font-weight: 600; }
+.compare-head { background: rgba(122, 59, 12, .07); }
+.compare-head > div { font-size: 12.5px; font-weight: 800; color: var(--orange-dk); text-transform: uppercase; letter-spacing: .02em; }
+.compare-us { color: var(--orange-dk) !important; position: relative; }
+.compare-row:not(.compare-head) .compare-us,
+.compare-head .compare-us { background: rgba(232, 128, 28, .1); box-shadow: inset 1px 0 0 rgba(232,128,28,.25), inset -1px 0 0 rgba(232,128,28,.25); }
+.compare-row > .yes { color: var(--green) !important; font-weight: 700; }
+.compare-row > .no { color: var(--muted); opacity: .7; }
+@media (max-width: 640px) {
+  .compare-row { grid-template-columns: 1.1fr .8fr .8fr .8fr; }
+  .compare-row > div { padding: 10px 5px; font-size: 11.5px; }
+  .compare-row > [role="rowheader"] { padding-left: 10px; }
+}
 
 /* ------------------------------------------------------------------------------------------------------- pricing */
 .pricing-card { max-width: 400px; margin: 0 auto; text-align: center; position: relative; overflow: visible; }
@@ -222,5 +250,7 @@ footer .disclaimer { max-width: 560px; margin: 0 auto 10px; opacity: .85; }
 @keyframes fall { to { transform: translateY(105vh) rotate(380deg); } }
 
 @media (max-width: 640px) {
-  .hero { padding-top: 74px; }
+  .hero { padding-top: 96px; }
+  .brand-logo { height: 50px; }
+  nav.scrolled .brand-logo { height: 42px; }
 }

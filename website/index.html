@@ -6,22 +6,23 @@
 <title>Meso Tracker - EXP, mesos &amp; item overlay for MapleStory Classic</title>
 <meta name="description" content="A screen-reading overlay for MapleStory Classic that tracks EXP/hr, mesos/hr, items and drop rates per map. Read-only, no game files touched. $1.99/mo.">
 <meta name="meso-api-base" content="https://meso-tracker-api.onrender.com">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23e8801c%22 stroke=%22%237a3b0c%22 stroke-width=%222%22/><circle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22%23ffc65c%22/></svg>">
+<link rel="icon" type="image/png" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <nav>
-  <div class="brand"><span class="coin"></span>Meso<span>Tracker</span></div>
+  <div class="brand"><img src="assets/logo.png" alt="Meso Tracker" class="brand-logo"><span class="brand-tag">for MapleStory Classic</span></div>
   <a href="#pricing" class="btn secondary" style="width:auto;padding:8px 18px;display:inline-block">Get it - $1.99/mo</a>
 </nav>
 <div class="nav-spacer"></div>
 
 <div class="wrap">
   <section class="hero">
-    <h1>Know your rate.<br>Farm <span class="accent">smarter</span>.</h1>
-    <p class="lead">A small overlay that sits next to MapleStory Classic and reads your EXP, mesos, items and the monsters on
+    <h1>Know your rate in <span class="accent">MapleStory Classic</span>.<br>Farm smarter.</h1>
+    <p class="lead">A small overlay that sits next to the game and reads your EXP, mesos, items and the monsters on
        your map - so you always know whether a spot is actually worth farming.</p>
 
     <div class="hero-cta">
@@ -30,13 +31,7 @@
     </div>
     <div class="live-note"><span class="dot"></span>Running right now on live MapleStory Classic sessions</div>
 
-    <div class="hud-demo" id="demo" aria-hidden="true">
-      <div class="hud-row"><span class="hud-label"><span class="sw" style="background:#ffc65c"></span>EXP/hr</span><span class="hud-value" id="hud-exp">0</span></div>
-      <div class="hud-row"><span class="hud-label"><span class="sw" style="background:#a4f0b6"></span>Mesos/hr</span><span class="hud-value green" id="hud-mesos">0</span></div>
-      <div class="hud-row"><span class="hud-label"><span class="sw" style="background:#7fd4ff"></span>Items this run</span><span class="hud-value" id="hud-items" style="color:#0f5c82">0</span></div>
-    </div>
-
-    <div class="hero-shot-frame reveal">
+    <div class="hero-shot-frame reveal" id="demo">
       <div class="hero-shot-glow"></div>
       <img class="hero-shot" src="assets/screenshot.png" alt="Meso Tracker overlay next to its Monsters Here panel, showing EXP/hr, mesos/hr, items picked up and monster drop rates over a live MapleStory Classic game screen">
     </div>
@@ -44,27 +39,75 @@
 
   <section class="section">
     <h2>What it does</h2>
-    <p class="subhead">Six small things that add up to never wasting an afternoon on a dead map again.</p>
-    <div class="features">
-      <div class="feature reveal"><div class="badge">EXP</div><h3>EXP &amp; mesos per hour</h3>
-        <p>Session and rolling rates, auto-paused when you're idle or in town, so the number is never diluted by AFK time.</p></div>
-      <div class="feature reveal wide"><h3>Monsters Here panel</h3>
-        <p>See every monster on your current map, its level, and its drops with an approximate drop chance - know what a map
-           is good for before you commit to farming it.</p>
+    <p class="subhead">One overlay. Six numbers you can trust.</p>
+    <div class="feature-split">
+      <div class="feature-main reveal">
+        <h3>Monsters Here</h3>
+        <p>Every monster on your map, its drops, and the real odds - before you commit to farming it.</p>
         <div class="drop-preview" aria-hidden="true">
           <div class="drop-row"><span class="drop-name">Jr. Necki <i>Lv 21</i></span><span class="drop-chance">40%</span><span class="drop-item">Jr. Necki Skin</span></div>
           <div class="drop-row"><span class="drop-name">Ligator <i>Lv 31</i></span><span class="drop-chance">50%</span><span class="drop-item">Ligator Skin</span></div>
           <div class="drop-row dim"><span class="drop-name">Elixir <i>drop</i></span><span class="drop-chance">0.003%</span><span class="drop-item">500 mesos</span></div>
-        </div></div>
-      <div class="feature reveal"><div class="badge">LOOT</div><h3>Every item, correctly named</h3>
-        <p>A closed-vocabulary matcher resolves damaged in-game text against the real item list instead of guessing - garbage
-           names never show up, and it tells you honestly when it isn't sure.</p></div>
-      <div class="feature reveal"><div class="badge">$</div><h3>Net mesos after potions</h3>
-        <p>Tracks what your Q/E potions actually cost and subtracts it, so "net per hour" is the number that matters.</p></div>
-      <div class="feature reveal"><div class="badge">LOG</div><h3>Per-map history</h3>
-        <p>Every map you farm gets logged with its own EXP/hr and mesos/hr, so you can compare spots later.</p></div>
-      <div class="feature reveal"><div class="badge">OK</div><h3>Read-only, always</h3>
-        <p>It only looks at your screen. It never touches game files or memory, and never sends a single keystroke or click.</p></div>
+        </div>
+      </div>
+      <ul class="feature-list reveal">
+        <li><span class="dot" style="background:var(--orange-hi)"></span><div><strong>EXP &amp; mesos/hr</strong><p>Auto-paused when you're idle or in town.</p></div></li>
+        <li><span class="dot" style="background:var(--green)"></span><div><strong>Every item, correctly named</strong><p>No garbled guesses - ever.</p></div></li>
+        <li><span class="dot" style="background:var(--blue)"></span><div><strong>Net mesos after potions</strong><p>What you actually earn, not the gross.</p></div></li>
+        <li><span class="dot" style="background:var(--orange)"></span><div><strong>Per-map history</strong><p>Compare every spot you've farmed.</p></div></li>
+        <li><span class="dot" style="background:var(--red)"></span><div><strong>Read-only, always</strong><p>Screen only. Never files, never memory.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="tech">
+    <h2>Smarter than a spreadsheet</h2>
+    <p class="subhead">One optimized model, trained on MapleStory Classic itself - not a per-map script someone had to configure.</p>
+    <div class="tech-statement reveal">
+      <span class="accent">Every map zone.</span> No setup. No garbled guesses.
+    </div>
+    <div class="tech-tags reveal">
+      <span class="tech-tag">Trained on MapleStory Classic</span>
+      <span class="tech-tag">Closed-vocabulary matching</span>
+      <span class="tech-tag">Tells you when it isn't sure</span>
+    </div>
+    <div class="compare-table reveal" role="table" aria-label="Meso Tracker compared to manual tracking and DIY scripts">
+      <div class="compare-row compare-head" role="row">
+        <div role="columnheader"></div>
+        <div role="columnheader" class="compare-us">Meso Tracker</div>
+        <div role="columnheader">Notes &amp; spreadsheet</div>
+        <div role="columnheader">DIY OCR script</div>
+      </div>
+      <div class="compare-row" role="row">
+        <div role="rowheader">Works on every map zone immediately</div>
+        <div class="yes" role="cell">Yes</div>
+        <div role="cell">N/A</div>
+        <div class="no" role="cell">One map per config</div>
+      </div>
+      <div class="compare-row" role="row">
+        <div role="rowheader">Still correct when text renders garbled</div>
+        <div class="yes" role="cell">Yes - closed-vocabulary match</div>
+        <div role="cell">N/A</div>
+        <div class="no" role="cell">Breaks</div>
+      </div>
+      <div class="compare-row" role="row">
+        <div role="rowheader">Net mesos after potion cost</div>
+        <div class="yes" role="cell">Automatic</div>
+        <div class="no" role="cell">Manual math</div>
+        <div class="no" role="cell">Rarely tracked</div>
+      </div>
+      <div class="compare-row" role="row">
+        <div role="rowheader">Touches game memory or files</div>
+        <div class="yes" role="cell">Never - screen only</div>
+        <div role="cell">N/A</div>
+        <div class="no" role="cell">Often, for speed</div>
+      </div>
+      <div class="compare-row" role="row">
+        <div role="rowheader">Time to get real numbers</div>
+        <div class="yes" role="cell">Minutes - just subscribe</div>
+        <div class="no" role="cell">Hours, by hand</div>
+        <div class="no" role="cell">Hours of setup, per map</div>
+      </div>
     </div>
   </section>
 
