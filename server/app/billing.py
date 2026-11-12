@@ -94,6 +94,15 @@ def handle_event(settings, conn, event):
 
 
 def _period_end(sub):
+    """sub: a Subscription (dict from a webhook, or a stripe.Subscription object from .retrieve()). Recent Stripe API
+    versions (this app pins 2025-03-31.basil) moved current_period_end off the Subscription itself and onto each
+    subscription item, so the top-level field is normally absent now - fall back to the first item's."""
     import datetime
     ts = sub.get("current_period_end") if isinstance(sub, dict) else getattr(sub, "current_period_end", None)
+    if not ts:
+        items = sub.get("items") if isinstance(sub, dict) else getattr(sub, "items", None)
+        data = (items.get("data") if isinstance(items, dict) else getattr(items, "data", None)) or []
+        if data:
+            first = data[0]
+            ts = first.get("current_period_end") if isinstance(first, dict) else getattr(first, "current_period_end", None)
     return datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc) if ts else None
