@@ -263,6 +263,12 @@ a.brand { text-decoration: none; }
 .article li { font-size: 15.5px; line-height: 1.7; color: var(--ink); font-weight: 400; margin-bottom: 6px; }
 .article a:not(.btn) { color: var(--blue); font-weight: 700; }
 .article-cta { text-align: center; margin: 34px 0 10px; }
+.article-source { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--cream-edge); font-size: 13px; color: var(--muted); font-weight: 400; line-height: 1.6; }
+.article-source a { color: var(--blue); font-weight: 700; }
+.article table { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; }
+.article table th, .article table td { text-align: left; padding: 8px 10px; border-bottom: 1px dashed var(--cream-edge); }
+.article table th { color: var(--orange-dk); font-size: 13px; text-transform: uppercase; letter-spacing: .02em; }
+.article table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ---------------------------------------------------------------------------------------------------- footer */
 footer { text-align: center; padding: 34px 0 54px; font-size: 12px; color: var(--orange-dk); }
