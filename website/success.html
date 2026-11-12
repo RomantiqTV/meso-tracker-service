@@ -18,5 +18,24 @@
     <a href="index.html" class="btn secondary" style="margin-top:16px;display:inline-block;width:auto;padding:10px 20px">Back to site</a>
   </div>
 </div>
+<script>
+// A little celebratory coin-fall, purely decorative - skipped entirely for reduced-motion.
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const colors = ["#ffc65c", "#e8801c", "#fff6da", "#7fd4ff"];
+  for (let i = 0; i < 46; i++) {
+    const p = document.createElement("div");
+    p.className = "confetti-piece";
+    const size = Math.random() * 7 + 5;
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.background = colors[i % colors.length];
+    p.style.animationDuration = Math.random() * 2.4 + 2.6 + "s";
+    p.style.animationDelay = Math.random() * 1.2 + "s";
+    p.style.opacity = String(Math.random() * 0.5 + 0.5);
+    document.body.appendChild(p);
+  }
+}
+</script>
 </body>
 </html>
