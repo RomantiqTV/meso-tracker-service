@@ -25,7 +25,6 @@
   <section class="hero">
     <div class="hero-canvas-wrap"><canvas id="hero-canvas"></canvas></div>
 
-    <div class="kicker"><span class="dot"></span> Live on MapleStory Classic right now</div>
     <h1>Know your rate.<br>Farm <span class="accent">smarter</span>.</h1>
     <p class="lead">A small overlay that sits next to MapleStory Classic and reads your EXP, mesos, items and the monsters on
        your map - so you always know whether a spot is actually worth farming.</p>
@@ -34,6 +33,7 @@
       <a href="#pricing" class="btn" style="width:auto">Subscribe - $1.99/mo</a>
       <a href="#demo" class="btn secondary" style="width:auto">See it in action</a>
     </div>
+    <div class="live-note"><span class="dot"></span>Running right now on live MapleStory Classic sessions</div>
 
     <div class="hud-demo" id="demo" aria-hidden="true">
       <div class="hud-row"><span class="hud-label"><span class="sw" style="background:#ffc65c"></span>EXP/hr</span><span class="hud-value" id="hud-exp">0</span></div>
@@ -53,12 +53,17 @@
     <div class="features">
       <div class="feature reveal"><div class="badge">EXP</div><h3>EXP &amp; mesos per hour</h3>
         <p>Session and rolling rates, auto-paused when you're idle or in town, so the number is never diluted by AFK time.</p></div>
+      <div class="feature reveal wide"><h3>Monsters Here panel</h3>
+        <p>See every monster on your current map, its level, and its drops with an approximate drop chance - know what a map
+           is good for before you commit to farming it.</p>
+        <div class="drop-preview" aria-hidden="true">
+          <div class="drop-row"><span class="drop-name">Jr. Necki <i>Lv 21</i></span><span class="drop-chance">40%</span><span class="drop-item">Jr. Necki Skin</span></div>
+          <div class="drop-row"><span class="drop-name">Ligator <i>Lv 31</i></span><span class="drop-chance">50%</span><span class="drop-item">Ligator Skin</span></div>
+          <div class="drop-row dim"><span class="drop-name">Elixir <i>drop</i></span><span class="drop-chance">0.003%</span><span class="drop-item">500 mesos</span></div>
+        </div></div>
       <div class="feature reveal"><div class="badge">LOOT</div><h3>Every item, correctly named</h3>
         <p>A closed-vocabulary matcher resolves damaged in-game text against the real item list instead of guessing - garbage
            names never show up, and it tells you honestly when it isn't sure.</p></div>
-      <div class="feature reveal"><div class="badge">MAP</div><h3>Monsters Here panel</h3>
-        <p>See every monster on your current map, its level, and its drops with an approximate drop chance - know what a map
-           is good for before you commit to farming it.</p></div>
       <div class="feature reveal"><div class="badge">$</div><h3>Net mesos after potions</h3>
         <p>Tracks what your Q/E potions actually cost and subtracts it, so "net per hour" is the number that matters.</p></div>
       <div class="feature reveal"><div class="badge">LOG</div><h3>Per-map history</h3>

@@ -9,6 +9,12 @@
 
 * { box-sizing: border-box; }
 ::selection { background: var(--orange-hi); color: var(--orange-dk); }
+:focus-visible { outline: 2.5px solid var(--orange-dk); outline-offset: 2px; border-radius: 4px; }
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--sky-mid); }
+::-webkit-scrollbar-thumb { background: var(--orange); border: 2.5px solid var(--sky-mid); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange-dk); }
+html { scrollbar-color: var(--orange) var(--sky-mid); }
 
 body {
   margin: 0; color: var(--ink); font-family: "Nunito", sans-serif; font-weight: 600;
@@ -61,14 +67,11 @@ nav.scrolled .brand span { color: var(--orange); }
 #hero-canvas { width: 100%; height: 100%; display: block; }
 .hero > * { position: relative; z-index: 1; }
 
-.kicker {
-  display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; letter-spacing: .03em;
-  color: var(--orange-dk); background: var(--cream-glass); border: 1.5px solid var(--cream-edge); border-radius: 999px;
-  padding: 6px 14px 6px 10px; margin-bottom: 18px; box-shadow: 0 3px 0 rgba(59,29,6,.12);
-  text-shadow: none; backdrop-filter: blur(6px);
-  animation: float-y 4s ease-in-out infinite;
+.live-note {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700;
+  color: rgba(255,255,255,.9); margin-top: 16px;
 }
-.kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(31,138,58,.25); animation: pulse 2s ease-in-out infinite; }
+.live-note .dot { width: 7px; height: 7px; border-radius: 50%; background: #7cf29a; box-shadow: 0 0 0 3px rgba(124,242,154,.3); animation: pulse 2s ease-in-out infinite; flex: none; }
 
 .hero h1 {
   font-size: clamp(34px, 5.4vw, 52px); line-height: 1.08; margin: 0 0 14px; letter-spacing: -.01em;
@@ -131,14 +134,23 @@ nav.scrolled .brand span { color: var(--orange); }
   margin-bottom: 10px; border-radius: 9px; font-size: 12px; font-weight: 800; letter-spacing: .03em; color: #fff;
   background: linear-gradient(180deg, var(--orange-hi), var(--orange)); box-shadow: 0 3px 0 var(--orange-dk);
 }
+/* The one feature that's genuinely different in kind (a live per-monster drop table, not a one-line stat) gets more
+   room and a real preview instead of another icon+heading+text tile, so the grid isn't six identical boxes. */
+.feature.wide { grid-column: span 2; }
+.drop-preview {
+  margin-top: 14px; border: 1.5px solid var(--cream-edge); border-radius: 10px; overflow: hidden; background: var(--cream-hi);
+}
+.drop-row { display: flex; align-items: baseline; gap: 10px; padding: 7px 12px; font-size: 13px; font-weight: 700; }
+.drop-row + .drop-row { border-top: 1px dashed var(--cream-edge); }
+.drop-row .drop-name { flex: 1; color: var(--ink); }
+.drop-row .drop-name i { font-style: normal; font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 4px; }
+.drop-row .drop-chance { color: var(--green); min-width: 52px; text-align: right; }
+.drop-row .drop-item { flex: 1.4; color: var(--muted); font-weight: 400; text-align: right; }
+.drop-row.dim { opacity: .55; }
+@media (max-width: 640px) { .feature.wide { grid-column: span 1; } }
 
 /* ------------------------------------------------------------------------------------------------------- pricing */
 .pricing-card { max-width: 400px; margin: 0 auto; text-align: center; position: relative; overflow: visible; }
-.pricing-card::before {
-  content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: 18px;
-  background: radial-gradient(ellipse at 50% 0%, var(--orange-hi), transparent 70%);
-  opacity: .5; filter: blur(16px);
-}
 .pricing-badge {
   position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap;
   background: var(--orange-dk); color: #fff6da; font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 999px;
@@ -163,6 +175,7 @@ input[type=email]:focus { outline: none; border-color: var(--orange); box-shadow
 
 .btn {
   display: inline-block; width: 100%; padding: 14px; border-radius: 10px; border: 2px solid var(--orange-dk);
+  text-decoration: none; text-align: center;
   background: linear-gradient(180deg, var(--orange-hi), var(--orange)); color: #fff; font-weight: 700; font-size: 16px;
   cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 4px 0 var(--orange-dk);
   position: relative; overflow: hidden; transition: transform .15s ease, box-shadow .15s ease, filter .2s ease;
@@ -207,7 +220,6 @@ footer .disclaimer { max-width: 560px; margin: 0 auto 10px; opacity: .85; }
 .confetti-piece { position: fixed; top: -20px; z-index: 0; border-radius: 3px; pointer-events: none; animation: fall linear forwards; }
 
 /* ----------------------------------------------------------------------------------------------- keyframes */
-@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(31,138,58,.25); } 50% { box-shadow: 0 0 0 6px rgba(31,138,58,0); } }
 @keyframes slide-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 @keyframes fall { to { transform: translateY(105vh) rotate(380deg); } }
