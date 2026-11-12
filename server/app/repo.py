@@ -38,6 +38,17 @@ def has_active_subscription(cur, customer_id):
     return cur.fetchone() is not None
 
 
+def get_subscription_for_customer(cur, customer_id):
+    """The subscription to show in the app's account info: prefers an active/trialing one, else the most recently
+    updated row (so a just-canceled subscription still reports its real current_period_end instead of nothing)."""
+    cur.execute(
+        "SELECT * FROM subscriptions WHERE customer_id = %s ORDER BY (status IN ('active', 'trialing')) DESC, "
+        "updated_at DESC LIMIT 1",
+        (customer_id,),
+    )
+    return cur.fetchone()
+
+
 def create_license(cur, customer_id, key_hash, key_hint_, max_activations):
     cur.execute(
         "INSERT INTO licenses (customer_id, key_hash, key_hint, max_activations) VALUES (%s, %s, %s, %s) RETURNING *",

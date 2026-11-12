@@ -32,6 +32,7 @@ class FakeStore:
         self.customers = {}          # email -> row
         self.licenses = {}           # id -> row
         self.active_customers = set()
+        self.subscriptions = {}      # customer_id -> {"status": ..., "current_period_end": ...}
         self.log = []
 
     def add_customer(self, email):
@@ -66,6 +67,10 @@ def fake_repo_for(store):
             return customer_id in store.active_customers
 
         @staticmethod
+        def get_subscription_for_customer(cur, customer_id):
+            return store.subscriptions.get(customer_id)
+
+        @staticmethod
         def bind_hwid(cur, license_id, hwid):
             store.licenses[license_id]["hwid"] = hwid
 
@@ -95,6 +100,7 @@ def fake_repo_for(store):
                 store.active_customers.add(customer_id)
             else:
                 store.active_customers.discard(customer_id)
+            store.subscriptions[customer_id] = {"status": status, "current_period_end": period_end}
 
     return R()
 

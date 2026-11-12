@@ -124,6 +124,15 @@ def _authenticate(cur, email, license_key, app_version=""):
     return customer, lic
 
 
+def _account_info(cur, customer_id):
+    """Shown in the app's Settings > Account tab: subscription status and when the current period ends."""
+    sub = repo.get_subscription_for_customer(cur, customer_id)
+    if not sub:
+        return {"subscription_status": None, "current_period_end": None}
+    end = sub["current_period_end"]
+    return {"subscription_status": sub["status"], "current_period_end": end.isoformat() if end else None}
+
+
 @app.post("/v1/activate")
 def activate(body: ActivateBody, request: Request):
     ip = _client_ip(request)
@@ -146,10 +155,11 @@ def activate(body: ActivateBody, request: Request):
             raise HTTPException(409, "This licence is already active on another PC. Open the app on that PC and choose "
                                       "'Deactivate this device' in Settings, then try again here.")
         repo.log_activation(cur, lic["id"], event, body.hwid, ip, body.app_version)
+        account = _account_info(cur, customer["id"])
         conn.commit()
     token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, settings.session_ttl_hours)
     return {"session_token": token, "expires_in_hours": settings.session_ttl_hours, "offline_grace_hours": settings.offline_grace_hours,
-            **_version_info()}
+            **account, **_version_info()}
 
 
 class StatusBody(BaseModel):
@@ -173,9 +183,10 @@ def status(body: StatusBody, request: Request):
         customer, lic = _authenticate(cur, email, body.license_key, body.app_version)
         if lic["hwid"] != body.hwid:
             raise HTTPException(409, "This licence is active on a different PC")
+        account = _account_info(cur, customer["id"])
     token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, settings.session_ttl_hours)
     return {"session_token": token, "expires_in_hours": settings.session_ttl_hours, "offline_grace_hours": settings.offline_grace_hours,
-            **_version_info()}
+            **account, **_version_info()}
 
 
 class DeactivateBody(BaseModel):
