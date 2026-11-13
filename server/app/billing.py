@@ -37,10 +37,12 @@ def create_checkout_session(settings, customer_email=None, plan="monthly"):
         cancel_url=f"{settings.site_url}/cancel.html",
         allow_promotion_codes=True,
     )
+    # Pre-existing bug, surfaced while testing the new plans: `customer_creation` is only valid in `mode="payment"` -
+    # in subscription mode Stripe always creates the Customer itself, so there's nothing to set when email is absent.
+    # Previously this raised stripe.error.InvalidRequestError (500) for any checkout call that omitted email - never
+    # hit by the website itself (its email field is required), but a real latent bug for any other caller.
     if customer_email:
         kwargs["customer_email"] = customer_email
-    else:
-        kwargs["customer_creation"] = "always"
     session = stripe.checkout.Session.create(**kwargs)
     return session.url
 
