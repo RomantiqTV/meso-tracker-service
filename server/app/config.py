@@ -20,6 +20,10 @@ class Settings:
         self.stripe_secret_key = _require("STRIPE_SECRET_KEY")
         self.stripe_webhook_secret = _require("STRIPE_WEBHOOK_SECRET")
         self.stripe_price_id = _require("STRIPE_PRICE_ID")          # the recurring $1.99/mo Price ID
+        # Longer-term plans (see SETUP.md "Adding a plan") - optional: a plan whose Price ID isn't set yet is just
+        # left out of checkout (see billing.price_id_for) rather than failing the whole server to start.
+        self.stripe_price_id_6mo = os.environ.get("STRIPE_PRICE_ID_6MO", "")       # $8 every 6 months
+        self.stripe_price_id_yearly = os.environ.get("STRIPE_PRICE_ID_YEARLY", "")  # $10/year
         self.stripe_publishable_key = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
 
         # Resend (resend.com -> API Keys) - transactional email: license key + download link after purchase

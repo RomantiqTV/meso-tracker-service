@@ -11,6 +11,11 @@ Budget about 30-45 minutes the first time.
 1. Go to https://dashboard.stripe.com/register and create an account (your bank details go here, for payouts).
 2. **Products -> Add product.** Name: `Meso Tracker`. Pricing: **Recurring**, `$1.99`, **Monthly**. Save, then open the
    product and copy the **Price ID** (looks like `price_1Abc...`) - this is `STRIPE_PRICE_ID`.
+2b. **Longer plans (optional).** On that same product, **Add another price** twice more: **Recurring**, `$8.00`,
+    **Every 6 months**, and **Recurring**, `$10.00`, **Yearly**. Copy each Price ID - these are `STRIPE_PRICE_ID_6MO`
+    and `STRIPE_PRICE_ID_YEARLY`. Skip either (or both) for now if you'd rather launch with Monthly only: the website's
+    6 Months / Yearly buttons just show "not available yet" until the matching env var is set in Render (step 4) -
+    nothing breaks, nothing needs a code change later, just add the env var whenever the Price exists.
 3. **Developers -> API keys.** Copy the **Secret key** (`sk_live_...` once you're out of test mode, `sk_test_...` while
    testing) - this is `STRIPE_SECRET_KEY`. Copy the **Publishable key** too (`STRIPE_PUBLISHABLE_KEY`, not actually used
    server-side yet but worth saving).
@@ -41,6 +46,7 @@ Budget about 30-45 minutes the first time.
    generated itself - `DATABASE_URL`, `JWT_SIGNING_SECRET`, `LICENSE_KEY_PEPPER` - are already filled in and you don't
    need to touch them):
    - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID`, `STRIPE_PUBLISHABLE_KEY` (from step 1)
+   - `STRIPE_PRICE_ID_6MO`, `STRIPE_PRICE_ID_YEARLY` (from step 1, optional - from step 2b, only if you added those plans)
    - `RESEND_API_KEY`, `EMAIL_FROM` (from step 2)
    - `SITE_URL` - your static site's URL, e.g. `https://meso-tracker-site.onrender.com` (or your custom domain later)
    - `DOWNLOAD_URL` - where the packaged .exe will live; a GitHub Releases asset URL is the easiest option (see

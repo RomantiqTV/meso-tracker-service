@@ -48,13 +48,19 @@ def version():
 # ---------------------------------------------------------------------------------------------------------------------- checkout
 class CheckoutBody(BaseModel):
     email: EmailStr | None = None
+    plan: str = "monthly"       # "monthly" | "6mo" | "yearly" - see billing.PLAN_PRICE_ATTR
 
 
 @app.post("/v1/checkout")
 def checkout(body: CheckoutBody, request: Request):
     if not ratelimit.allow("checkout:" + _client_ip(request), max_per_window=10, window_s=60):
         raise HTTPException(429, "Too many requests, try again shortly")
-    url = billing.create_checkout_session(settings, body.email)
+    if body.plan not in billing.PLAN_PRICE_ATTR:
+        raise HTTPException(400, "Unknown plan")
+    try:
+        url = billing.create_checkout_session(settings, body.email, body.plan)
+    except ValueError:
+        raise HTTPException(503, "That plan isn't available yet - try Monthly, or try again later")
     return {"url": url}
 
 

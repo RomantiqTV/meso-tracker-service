@@ -14,11 +14,25 @@ log = logging.getLogger("meso.billing")
 stripe.api_version = "2025-03-31.basil"
 
 
-def create_checkout_session(settings, customer_email=None):
+# plan key -> which Settings attribute holds its Price ID. Add a new tier by adding one entry here, one env var in
+# config.py, and one radio option in the website's pricing form - nothing else needs to change.
+PLAN_PRICE_ATTR = {"monthly": "stripe_price_id", "6mo": "stripe_price_id_6mo", "yearly": "stripe_price_id_yearly"}
+
+
+def price_id_for(settings, plan):
+    """None if `plan` is unknown, or known but not configured yet (Price not created in Stripe / env var not set)."""
+    attr = PLAN_PRICE_ATTR.get(plan)
+    return getattr(settings, attr, None) if attr else None
+
+
+def create_checkout_session(settings, customer_email=None, plan="monthly"):
+    price_id = price_id_for(settings, plan)
+    if not price_id:
+        raise ValueError(f"no Price configured for plan {plan!r}")
     stripe.api_key = settings.stripe_secret_key
     kwargs = dict(
         mode="subscription",
-        line_items=[{"price": settings.stripe_price_id, "quantity": 1}],
+        line_items=[{"price": price_id, "quantity": 1}],
         success_url=f"{settings.site_url}/success.html?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{settings.site_url}/cancel.html",
         allow_promotion_codes=True,

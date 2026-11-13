@@ -10,7 +10,8 @@ for k, v in dict(DATABASE_URL="x", STRIPE_SECRET_KEY="sk_test_x", STRIPE_WEBHOOK
                   LICENSE_KEY_PEPPER="unit-test-pepper").items():
     os.environ.setdefault(k, v)
 
-from app.billing import _period_end  # noqa: E402
+from app.billing import _period_end, price_id_for  # noqa: E402
+from app.config import Settings  # noqa: E402
 
 
 class PeriodEndTests(unittest.TestCase):
@@ -39,6 +40,27 @@ class PeriodEndTests(unittest.TestCase):
             items = Items()
 
         self.assertEqual(_period_end(Sub()), datetime.datetime.fromtimestamp(self.TS, tz=datetime.timezone.utc))
+
+
+class PlanPriceTests(unittest.TestCase):
+    """price_id_for is pure too (just an attribute lookup) - the actual Stripe call is exercised manually against a
+    test-mode account, same as the rest of checkout."""
+
+    def test_monthly_is_always_configured(self):
+        self.assertEqual(price_id_for(Settings(), "monthly"), "price_x")
+
+    def test_longer_plan_not_set_up_in_stripe_yet_is_falsy_not_an_error(self):
+        self.assertFalse(price_id_for(Settings(), "6mo"))      # env var defaults to "" until the Price is created
+
+    def test_unknown_plan_key_returns_none(self):
+        self.assertIsNone(price_id_for(Settings(), "weekly"))
+
+    def test_configured_longer_plan_is_read_back(self):
+        os.environ["STRIPE_PRICE_ID_YEARLY"] = "price_year"
+        try:
+            self.assertEqual(price_id_for(Settings(), "yearly"), "price_year")
+        finally:
+            del os.environ["STRIPE_PRICE_ID_YEARLY"]
 
 
 if __name__ == "__main__":

@@ -32,18 +32,29 @@
   "operatingSystem": "Windows",
   "description": "A screen-reading overlay for MapleStory Classic that tracks EXP/hr, mesos/hr, items and drop rates per map, zone by zone. Read-only, no game files touched.",
   "url": "https://mesotracker.pro/",
-  "offers": {
-    "@type": "Offer",
-    "price": "1.99",
-    "priceCurrency": "USD",
-    "priceSpecification": {
-      "@type": "UnitPriceSpecification",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Monthly",
       "price": "1.99",
       "priceCurrency": "USD",
-      "billingIncrement": 1,
-      "unitCode": "MON"
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "1.99", "priceCurrency": "USD", "billingIncrement": 1, "unitCode": "MON" }
+    },
+    {
+      "@type": "Offer",
+      "name": "6 Months",
+      "price": "8.00",
+      "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "8.00", "priceCurrency": "USD", "billingIncrement": 6, "unitCode": "MON" }
+    },
+    {
+      "@type": "Offer",
+      "name": "Yearly",
+      "price": "10.00",
+      "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "10.00", "priceCurrency": "USD", "billingIncrement": 1, "unitCode": "ANN" }
     }
-  }
+  ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +169,25 @@
     <div class="card pricing-card reveal">
       <div class="pricing-badge">7-day free cancel, no questions</div>
       <div>Meso Tracker</div>
-      <div class="price">$1.99<span>/month</span></div>
+      <div class="plan-switch" role="radiogroup" aria-label="Billing plan">
+        <label class="plan-opt is-selected">
+          <input type="radio" name="plan" value="monthly" checked>
+          <span class="plan-name">Monthly</span>
+          <span class="plan-price">$1.99<small>/mo</small></span>
+        </label>
+        <label class="plan-opt">
+          <input type="radio" name="plan" value="6mo">
+          <span class="plan-save">Save 33%</span>
+          <span class="plan-name">6 Months</span>
+          <span class="plan-price">$8<small>/6mo</small></span>
+        </label>
+        <label class="plan-opt">
+          <input type="radio" name="plan" value="yearly">
+          <span class="plan-save">Save 58%</span>
+          <span class="plan-name">Yearly</span>
+          <span class="plan-price">$10<small>/yr</small></span>
+        </label>
+      </div>
       <ul>
         <li><span class="coin-tick"></span>Full overlay, every feature above</li>
         <li><span class="coin-tick"></span>Free updates while subscribed</li>

@@ -232,6 +232,37 @@ class VersionEndpointTests(unittest.TestCase):
                                      "download_url": "", "release_notes": "Bug fixes"})
 
 
+class CheckoutTests(unittest.TestCase):
+    """No real Stripe call here - create_checkout_session is mocked out; this is only the route's own plan validation."""
+
+    def setUp(self):
+        self.client = TestClient(main.app)
+
+    def test_defaults_to_the_monthly_plan(self):
+        with mock.patch.object(main.billing, "create_checkout_session", return_value="https://stripe.example/session") as m:
+            r = self.client.post("/v1/checkout", json={"email": "buyer@example.com"})
+        self.assertEqual(r.status_code, 200, r.text)
+        self.assertEqual(r.json(), {"url": "https://stripe.example/session"})
+        m.assert_called_once_with(main.settings, "buyer@example.com", "monthly")
+
+    def test_passes_through_a_longer_plan(self):
+        with mock.patch.object(main.billing, "create_checkout_session", return_value="https://stripe.example/session") as m:
+            r = self.client.post("/v1/checkout", json={"email": "buyer@example.com", "plan": "yearly"})
+        self.assertEqual(r.status_code, 200, r.text)
+        m.assert_called_once_with(main.settings, "buyer@example.com", "yearly")
+
+    def test_unknown_plan_is_rejected_before_ever_calling_stripe(self):
+        with mock.patch.object(main.billing, "create_checkout_session") as m:
+            r = self.client.post("/v1/checkout", json={"plan": "weekly"})
+        self.assertEqual(r.status_code, 400)
+        m.assert_not_called()
+
+    def test_a_plan_not_yet_set_up_in_stripe_is_a_clear_503_not_a_crash(self):
+        with mock.patch.object(main.billing, "create_checkout_session", side_effect=ValueError("no Price configured for plan 'yearly'")):
+            r = self.client.post("/v1/checkout", json={"plan": "yearly"})
+        self.assertEqual(r.status_code, 503)
+
+
 class WebhookSignatureTests(unittest.TestCase):
     def test_forged_signature_is_rejected(self):
         with mock.patch.object(main.db, "connect", fake_connect):
