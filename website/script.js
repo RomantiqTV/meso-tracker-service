@@ -65,6 +65,31 @@ if (navEl) {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+// ------------------------------------------------------------------------------------------------- parallax
+// Scroll position is handed to CSS as custom properties; styles.css turns them into per-layer offsets (clouds and
+// far hills in the hero, the specks in the pricing band). Skipped entirely when reduced motion is on.
+(function parallax() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const hero = document.querySelector(".hero"), band = document.querySelector(".band");
+  const hills = hero && hero.querySelector(".hills");
+  if (!hero && !band) return;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    if (hero) hero.style.setProperty("--sy", Math.min(window.scrollY, hero.offsetHeight).toFixed(1));
+    if (hills) {
+      const vh = window.innerHeight, past = vh * 0.4 - hills.getBoundingClientRect().top; // 0 when the hills sit 60% up
+      hero.style.setProperty("--hy", Math.max(-vh * 0.6, Math.min(vh * 0.6, past)).toFixed(1));
+    }
+    if (band) {
+      const r = band.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) band.style.setProperty("--by", (-r.top).toFixed(1));
+    }
+  };
+  window.addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
+
 // ------------------------------------------------------------------------------------------------ hero demo
 // The hero shows a working copy of the overlay and its metric bar running a made-up session (the caption says so).
 // It is a toy model with invented kill, meso and potion figures; only the drop table mirrors the real
