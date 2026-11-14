@@ -180,6 +180,13 @@ nav.scrolled .nav-link:hover { color: var(--orange); }
   .compare-row > [role="rowheader"] { padding-left: 10px; }
 }
 
+/* a wider variant (Meso Tracker + several named competitors) scrolls horizontally instead of cramming columns -
+   the bleed to the viewport edge (negative margin) just gives the scroll gesture room; the page itself never scrolls sideways */
+.compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
+.compare-table--wide { min-width: 760px; max-width: 1000px; }
+.compare-table--wide .compare-row { grid-template-columns: 1.7fr .9fr .9fr .9fr .9fr .9fr; }
+.compare-note { text-align: center; color: var(--muted); font-size: 12px; font-weight: 400; max-width: 560px; margin: 14px auto 0; line-height: 1.5; }
+
 /* ------------------------------------------------------------------------------------------------------- pricing */
 .pricing-card { max-width: 400px; margin: 0 auto; text-align: center; position: relative; overflow: visible; }
 .pricing-badge {
