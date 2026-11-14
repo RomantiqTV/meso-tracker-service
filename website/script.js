@@ -66,19 +66,20 @@ if (navEl) {
 }
 
 // ------------------------------------------------------------------------------------------------ hero demo
-// The hero shows a working copy of the overlay running a made-up session (the caption says so). It is a toy model
-// with invented kill, meso and potion rates; only the drop table mirrors the real screenshot. Nothing here talks to
-// the API. With reduced motion on it stays still until the visitor presses Resume.
+// The hero shows a working copy of the overlay and its metric bar running a made-up session (the caption says so).
+// It is a toy model with invented kill, meso and potion figures; only the drop table mirrors the real
+// screenshot. Nothing here talks to the API. With reduced motion on it stays still until the visitor presses Resume.
 (function heroDemo() {
   const root = document.getElementById("demo");
   if (!root) return;
-  const el = (k) => root.querySelector(`[data-demo="${k}"]`);
+  const all = (k) => root.querySelectorAll(`[data-demo="${k}"]`);
+  const set = (k, text) => all(k).forEach((n) => { n.textContent = text; });
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
   const MOBS = [
-    { exp: 38, drops: [["Jr. Necki Skin", 0.4, 21], ["Orange Potion", 0.01, 15], ["Orange", 0.008, 5], ["Mithril Ore", 0.003, 40], ["Topaz Ore", 0.002, 80]] },
-    { exp: 55, drops: [["Ligator Skin", 0.5, 31], ["Blue Potion", 0.01, 22], ["White Potion", 0.01, 35], ["Mithril Ore", 0.003, 40], ["Aquamarine Ore", 0.002, 40]] },
+    { exp: 40, drops: [["Firewood", 0.4, 17], ["Blue Potion", 0.01, 22], ["Orange Potion", 0.01, 15], ["Sap of Ancient Tree", 0.005, 300], ["Iron Ore", 0.004, 20], ["Diamond Ore", 0.001, 240]] },
+    { exp: 60, drops: [["Fire Boar's Tooth", 0.4, 32], ["Leather", 0.025, 10], ["Blue Potion", 0.01, 22], ["White Potion", 0.01, 35], ["Iron Ore", 0.003, 20], ["Garnet Ore", 0.002, 40], ["Diamond Ore", 0.001, 240]] },
   ];
-  const POTION_COST = 200;
+  const POTION_COST = 160;
   let s, timer = null, fresh = null;
 
   function start() {
@@ -107,21 +108,23 @@ if (navEl) {
     const items = [...s.loot.values()];
     const count = items.reduce((a, r) => a + r.n, 0), value = items.reduce((a, r) => a + r.value, 0);
     const hh = String(Math.floor(s.t / 3600)).padStart(2, "0"), mm = String(Math.floor(s.t / 60) % 60).padStart(2, "0"), ss = String(s.t % 60).padStart(2, "0");
-    el("clock").textContent = `${hh}:${mm}:${ss}`;
-    el("exp").textContent = fmt(s.exp); el("kills").textContent = fmt(s.kills); el("expHr").textContent = fmt(perHr(s.exp));
-    el("mesos").textContent = fmt(s.mesos); el("mesosHr").textContent = fmt(perHr(s.mesos));
-    el("items").textContent = fmt(count); el("itemsHr").textContent = fmt(perHr(count));
-    el("value").textContent = fmt(value); el("valueHr").textContent = fmt(perHr(value));
-    el("pots").textContent = fmt(s.pots); el("potCost").textContent = fmt(s.pots * POTION_COST); el("potHr").textContent = fmt(perHr(s.pots * POTION_COST));
+    set("clock", `${hh}:${mm}:${ss}`);
+    set("exp", fmt(s.exp)); set("kills", fmt(s.kills)); set("expHr", fmt(perHr(s.exp)));
+    set("mesos", fmt(s.mesos)); set("mesosHr", fmt(perHr(s.mesos)));
+    set("items", fmt(count)); set("itemsHr", fmt(perHr(count)));
+    set("value", fmt(value)); set("valueHr", fmt(perHr(value)));
+    set("pots", fmt(s.pots)); set("potCost", fmt(s.pots * POTION_COST)); set("potHr", fmt(perHr(s.pots * POTION_COST)));
     const gross = perHr(s.mesos + value);
-    el("gross").textContent = fmt(gross); el("net").textContent = fmt(gross - perHr(s.pots * POTION_COST));
+    set("gross", fmt(gross)); set("net", fmt(gross - perHr(s.pots * POTION_COST)));
 
-    const list = el("loot");
+    const list = all("loot")[0];
     list.textContent = "";
-    [...s.loot.entries()].reverse().slice(0, 4).forEach(([name, row]) => {
+    const rows = [...s.loot.entries()].reverse().slice(0, 4).map(([name, row]) => [name, `×${row.n}`, fmt(row.value), name === fresh]);
+    if (!rows.length) rows.push(["nothing picked up yet", "", "", false]);
+    rows.forEach(([name, n, v, isNew]) => {
       const li = document.createElement("li");
-      [name, `×${row.n}`, fmt(row.value)].forEach((text) => { const sp = document.createElement("span"); sp.textContent = text; li.appendChild(sp); });
-      if (name === fresh) li.className = "is-new";
+      [name, n, v].forEach((text) => { const sp = document.createElement("span"); sp.textContent = text; li.appendChild(sp); });
+      if (isNew) li.className = "is-new";
       list.appendChild(li);
     });
     root.querySelectorAll("[data-drop]").forEach((tr) => {
@@ -134,9 +137,10 @@ if (navEl) {
   function setRunning(on) {
     clearInterval(timer); timer = null;
     if (on) timer = setInterval(() => { step(); render(); }, 1000);
-    el("pause").textContent = on ? "Pause" : "Resume";
-    el("rec").textContent = on ? "Rec" : "Paused";
-    el("rec").classList.toggle("is-paused", !on);
+    set("pause", on ? "Pause" : "Resume");
+    set("rec", on ? "Tracking" : "Paused");
+    set("state", on ? "" : "[Paused]");
+    all("rec").forEach((n) => n.classList.toggle("is-paused", !on));
   }
 
   // Open a few minutes into a session so the numbers are already meaningful but rare drops are still to come.
@@ -146,7 +150,7 @@ if (navEl) {
   render();
   setRunning(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  el("pause").addEventListener("click", () => setRunning(!timer));
-  el("reset").addEventListener("click", () => { start(); render(); });
+  all("pause").forEach((b) => b.addEventListener("click", () => setRunning(!timer)));
+  all("reset").forEach((b) => b.addEventListener("click", () => { start(); render(); }));
   document.addEventListener("visibilitychange", () => { if (document.hidden && timer) setRunning(false); });
 })();
