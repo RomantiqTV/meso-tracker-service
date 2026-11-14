@@ -83,7 +83,20 @@
   <svg class="cloud cloud-c" aria-hidden="true"><use href="#cloud"/></svg>
   <svg class="cloud cloud-d" aria-hidden="true"><use href="#cloud"/></svg>
 
-  <div class="wrap hero-grid">
+  <div class="wrap hero-grid" data-demo-root>
+    <div class="mbar hero-bar">
+      <div class="mbar-brand"><span class="coin"></span>Meso Tracker</div>
+      <div class="mbar-map"><small><span data-demo="state"></span><time data-demo="clock">00:00:00</time></small><strong>The Burnt Land I</strong></div>
+      <div class="mbar-stat"><b>EXP/hr</b><span class="c-sky" data-demo="expHr">0</span></div>
+      <div class="mbar-stat mbar-level"><span>To level:</span><span data-demo="toLevel">-</span></div>
+      <div class="mbar-stat"><b>LOOT</b><div class="mbar-pair"><span>Mesos/hr: <i data-demo="mesosHr">0</i></span><span>Items: <i data-demo="items">0</i></span></div></div>
+      <div class="mbar-stat"><span>Net/hr:</span><span class="c-lime" data-demo="net">0</span></div>
+      <div class="mbar-actions">
+        <button type="button" class="gbtn blue" data-demo="pause">Pause</button>
+        <button type="button" class="gbtn red" data-demo="reset">Reset</button>
+        <span class="mbar-gear" aria-hidden="true">&#9881;</span>
+      </div>
+    </div>
     <div>
       <h1>Know what every MapleStory Classic map really pays.</h1>
       <p class="lead">Meso Tracker is a small overlay that sits next to the game and reads your EXP, mesos, items and
@@ -100,13 +113,6 @@
     </div>
 
     <figure class="demo" id="demo">
-      <div class="mbar" data-live>
-        <span class="coin"></span>
-        <div class="mbar-map"><small><span data-demo="state"></span><time data-demo="clock">00:00:00</time></small><strong>The Burnt Land I</strong></div>
-        <div class="mbar-stat"><b>EXP/hr</b><span class="c-sky" data-demo="expHr">0</span></div>
-        <div class="mbar-stat"><span>Net/hr</span><span class="c-lime" data-demo="net">0</span></div>
-        <button type="button" class="gbtn blue" data-demo="pause">Pause</button>
-      </div>
       <div class="demo-stage">
         <div class="win win-tracker">
           <div class="win-bar"><span class="coin"></span>Meso Tracker<span class="spacer"></span><span class="win-rec" data-demo="rec">Tracking</span></div>
@@ -229,17 +235,17 @@
 
         <article class="win feature f-12">
           <div class="win-bar"><span class="coin"></span>Metric bar</div>
-          <div class="win-body feature-row">
-            <div>
-              <h3>A slim bar when you want the game back</h3>
-              <p>Collapse the overlay into one strip along the top of the screen, and pick exactly which numbers it shows.</p>
-            </div>
+          <div class="win-body">
+            <h3>A slim bar when you want the game back</h3>
+            <p>Collapse the overlay into one strip along the top of the screen, and pick exactly which numbers it shows.</p>
             <div class="mbar mock" aria-hidden="true">
-              <span class="coin"></span>
+              <div class="mbar-brand"><span class="coin"></span>Meso Tracker</div>
               <div class="mbar-map"><small>00:42:10</small><strong>The Burnt Land I</strong></div>
               <div class="mbar-stat"><b>EXP/hr</b><span class="c-sky">118,400</span></div>
-              <div class="mbar-stat"><span>To level</span><span>1h 12m</span></div>
-              <div class="mbar-stat"><span>Net/hr</span><span class="c-lime">70,239</span></div>
+              <div class="mbar-stat mbar-level"><span>To level:</span><span>1h 12m</span></div>
+              <div class="mbar-stat"><b>LOOT</b><div class="mbar-pair"><span>Mesos/hr: <i>52,310</i></span><span>Items: <i>806</i></span></div></div>
+              <div class="mbar-stat"><span>Net/hr:</span><span class="c-lime">70,239</span></div>
+              <div class="mbar-actions"><span class="gbtn blue">Pause</span><span class="gbtn red">Reset</span><span class="mbar-gear">&#9881;</span></div>
             </div>
           </div>
         </article>

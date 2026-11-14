@@ -70,7 +70,7 @@ if (navEl) {
 // It is a toy model with invented kill, meso and potion figures; only the drop table mirrors the real
 // screenshot. Nothing here talks to the API. With reduced motion on it stays still until the visitor presses Resume.
 (function heroDemo() {
-  const root = document.getElementById("demo");
+  const root = document.querySelector("[data-demo-root]");
   if (!root) return;
   const all = (k) => root.querySelectorAll(`[data-demo="${k}"]`);
   const set = (k, text) => all(k).forEach((n) => { n.textContent = text; });
@@ -79,7 +79,7 @@ if (navEl) {
     { exp: 40, drops: [["Firewood", 0.4, 17], ["Blue Potion", 0.01, 22], ["Orange Potion", 0.01, 15], ["Sap of Ancient Tree", 0.005, 300], ["Iron Ore", 0.004, 20], ["Diamond Ore", 0.001, 240]] },
     { exp: 60, drops: [["Fire Boar's Tooth", 0.4, 32], ["Leather", 0.025, 10], ["Blue Potion", 0.01, 22], ["White Potion", 0.01, 35], ["Iron Ore", 0.003, 20], ["Garnet Ore", 0.002, 40], ["Diamond Ore", 0.001, 240]] },
   ];
-  const POTION_COST = 160;
+  const POTION_COST = 160, LEVEL_EXP = 14000; // both invented for the demo
   let s, timer = null, fresh = null;
 
   function start() {
@@ -116,6 +116,8 @@ if (navEl) {
     set("pots", fmt(s.pots)); set("potCost", fmt(s.pots * POTION_COST)); set("potHr", fmt(perHr(s.pots * POTION_COST)));
     const gross = perHr(s.mesos + value);
     set("gross", fmt(gross)); set("net", fmt(gross - perHr(s.pots * POTION_COST)));
+    const left = LEVEL_EXP - (s.exp % LEVEL_EXP), expHr = perHr(s.exp);
+    set("toLevel", expHr ? `${Math.max(1, Math.ceil((left / expHr) * 60))}m` : "-");
 
     const list = all("loot")[0];
     list.textContent = "";
