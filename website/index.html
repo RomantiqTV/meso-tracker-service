@@ -57,79 +57,244 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/lilita-one.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="cloud" viewBox="0 0 24 10">
+    <path d="M8 0h6v1h2v1h3v1h2v1h2v1h1v3h-1v1h-2v1H3V9H1V8H0V5h1V4h2V3h2V1h3z"/>
+  </symbol>
+</svg>
+
 <nav>
-  <div class="brand"><img src="assets/logo.png" alt="Meso Tracker" class="brand-logo"><span class="brand-tag">for MapleStory Classic</span></div>
+  <a href="./" class="brand"><img src="assets/logo-520.png" width="520" height="158" alt="Meso Tracker" class="brand-logo"><span class="brand-tag">for MapleStory Classic</span></a>
   <div class="nav-links">
     <a href="blog/" class="nav-link">Guides</a>
-    <a href="#pricing" class="btn secondary" style="width:auto;padding:8px 18px;display:inline-block">Get it - $1.99/mo</a>
+    <a href="#faq" class="nav-link optional">FAQ</a>
+    <a href="#pricing" class="btn">Get it for $1.99/mo</a>
   </div>
 </nav>
-<div class="nav-spacer"></div>
 
-<div class="wrap">
-  <section class="hero">
-    <h1>Know your rate in <span class="accent">MapleStory Classic</span>.<br>Farm smarter.</h1>
-    <p class="lead">A small overlay that sits next to the game and reads your EXP, mesos, items and the monsters on
-       your map - so you always know whether a spot is actually worth farming.</p>
+<header class="hero">
+  <svg class="cloud cloud-a" aria-hidden="true"><use href="#cloud"/></svg>
+  <svg class="cloud cloud-b" aria-hidden="true"><use href="#cloud"/></svg>
+  <svg class="cloud cloud-c" aria-hidden="true"><use href="#cloud"/></svg>
+  <svg class="cloud cloud-d" aria-hidden="true"><use href="#cloud"/></svg>
 
-    <div class="hero-cta">
-      <a href="#pricing" class="btn" style="width:auto">Subscribe - $1.99/mo</a>
-      <a href="#demo" class="btn secondary" style="width:auto">See it in action</a>
-    </div>
-    <div class="live-note"><span class="dot"></span>Running right now on live MapleStory Classic sessions</div>
-
-    <div class="hero-shot-frame reveal" id="demo">
-      <div class="hero-shot-glow"></div>
-      <img class="hero-shot" src="assets/screenshot.png" alt="Meso Tracker overlay next to its Monsters Here panel, showing EXP/hr, mesos/hr, items picked up and monster drop rates over a live MapleStory Classic game screen">
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>What it does</h2>
-    <p class="subhead">One overlay. Six numbers you can trust.</p>
-    <div class="feature-split">
-      <div class="feature-main reveal">
-        <h3>Monsters Here</h3>
-        <p>Every monster on your map, its drops, and the real odds - before you commit to farming it.</p>
-        <div class="drop-preview" aria-hidden="true">
-          <div class="drop-row"><span class="drop-name">Jr. Necki <i>Lv 21</i></span><span class="drop-chance">40%</span><span class="drop-item">Jr. Necki Skin</span></div>
-          <div class="drop-row"><span class="drop-name">Ligator <i>Lv 31</i></span><span class="drop-chance">50%</span><span class="drop-item">Ligator Skin</span></div>
-          <div class="drop-row dim"><span class="drop-name">Elixir <i>drop</i></span><span class="drop-chance">0.003%</span><span class="drop-item">500 mesos</span></div>
-        </div>
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Know what every MapleStory Classic map really pays.</h1>
+      <p class="lead">Meso Tracker is a small overlay that sits next to the game and reads your EXP, mesos, items and
+         the monsters on your map, so you always know whether a spot is worth farming.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn">Subscribe for $1.99/mo</a>
+        <a href="#real" class="btn secondary">See a real screenshot</a>
       </div>
-      <ul class="feature-list reveal">
-        <li><span class="dot" style="background:var(--orange-hi)"></span><div><strong>EXP &amp; mesos/hr</strong><p>Auto-paused when you're idle or in town.</p></div></li>
-        <li><span class="dot" style="background:var(--green)"></span><div><strong>Every item, correctly named</strong><p>No garbled guesses - ever.</p></div></li>
-        <li><span class="dot" style="background:var(--blue)"></span><div><strong>Net mesos after potions</strong><p>What you actually earn, not the gross.</p></div></li>
-        <li><span class="dot" style="background:var(--orange)"></span><div><strong>Per-map history</strong><p>Compare every spot you've farmed.</p></div></li>
-        <li><span class="dot" style="background:var(--red)"></span><div><strong>Read-only, always</strong><p>Screen only. Never files, never memory.</p></div></li>
+      <ul class="hero-facts">
+        <li>Windows</li>
+        <li>Reads your screen only</li>
+        <li>Cancel any time</li>
       </ul>
     </div>
+
+    <figure class="demo" id="demo">
+      <div class="demo-stage">
+        <div class="win win-tracker">
+          <div class="win-bar"><span class="coin"></span>Meso Tracker<span class="spacer"></span><span class="win-rec" data-demo="rec">Rec</span></div>
+          <div class="win-map">
+            <div><small>Hidden Street</small><strong>The Murky Swamp II</strong></div>
+            <time data-demo="clock">00:10:01</time>
+          </div>
+          <div class="win-body">
+            <div class="win-sec">Experience</div>
+            <dl class="rows">
+              <div><dt>EXP gained</dt><dd><span data-demo="exp">18,240</span><small><span data-demo="kills">402</span> kills</small></dd></div>
+              <div><dt>EXP / hour</dt><dd class="c-blue" data-demo="expHr">109,258</dd></div>
+            </dl>
+            <div class="win-sec">Loot</div>
+            <dl class="rows">
+              <div><dt>Mesos picked up</dt><dd data-demo="mesos">9,655</dd></div>
+              <div><dt>Mesos / hour</dt><dd class="c-gold" data-demo="mesosHr">57,834</dd></div>
+              <div><dt>Items picked up</dt><dd><span data-demo="items">184</span><small><span data-demo="itemsHr">1,102</span>/hr</small></dd></div>
+              <div><dt>Item value (NPC)</dt><dd><span data-demo="value">4,871</span><small><span data-demo="valueHr">29,177</span>/hr</small></dd></div>
+            </dl>
+            <ul class="loot" data-demo="loot">
+              <li><span>Ligator Skin</span><span>&times;98</span><span>3,038</span></li>
+              <li><span>Jr. Necki Skin</span><span>&times;83</span><span>1,743</span></li>
+              <li><span>Mithril Ore</span><span>&times;2</span><span>80</span></li>
+            </ul>
+            <div class="win-sec">Supplies used</div>
+            <dl class="rows">
+              <div><dt>[E] Blue Potion</dt><dd><small>&times;<span data-demo="pots">14</span></small> <span class="c-red" data-demo="potCost">2,800</span></dd></div>
+              <div><dt>Potion cost / hour</dt><dd class="c-red" data-demo="potHr">16,772</dd></div>
+            </dl>
+            <div class="win-total">
+              <div><span>Theoretical gross / hr</span><b class="c-gold" data-demo="gross">87,011</b></div>
+              <div><span>Net after potions / hr</span><b class="c-green" data-demo="net">70,239</b></div>
+            </div>
+          </div>
+          <div class="win-actions">
+            <button type="button" class="gbtn blue" data-demo="pause">Pause</button>
+            <button type="button" class="gbtn red" data-demo="reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="win win-monsters">
+          <div class="win-bar"><span class="coin"></span>Monsters Here</div>
+          <div class="win-map"><div><small>Lv 21-31</small><strong>The Murky Swamp II</strong></div></div>
+          <div class="win-body">
+            <table class="drops">
+              <tbody>
+                <tr class="mob"><th scope="rowgroup">Jr. Necki</th><th colspan="2">Lv 21</th></tr>
+                <tr data-drop="Jr. Necki Skin" class="got"><td>Jr. Necki Skin</td><td>40%</td><td>21</td></tr>
+                <tr data-drop="Orange Potion"><td>Orange Potion</td><td>1%</td><td>15</td></tr>
+                <tr data-drop="Orange"><td>Orange</td><td>0.8%</td><td>5</td></tr>
+                <tr data-drop="Mithril Ore" class="got"><td>Mithril Ore</td><td>0.3%</td><td>40</td></tr>
+                <tr data-drop="Topaz Ore"><td>Topaz Ore</td><td>0.2%</td><td>80</td></tr>
+                <tr class="mob"><th scope="rowgroup">Ligator</th><th colspan="2">Lv 31</th></tr>
+                <tr data-drop="Ligator Skin" class="got"><td>Ligator Skin</td><td>50%</td><td>31</td></tr>
+                <tr data-drop="Blue Potion"><td>Blue Potion</td><td>1%</td><td>22</td></tr>
+                <tr data-drop="White Potion"><td>White Potion</td><td>1%</td><td>35</td></tr>
+                <tr data-drop="Mithril Ore" class="got"><td>Mithril Ore</td><td>0.3%</td><td>40</td></tr>
+                <tr data-drop="Aquamarine Ore"><td>Aquamarine Ore</td><td>0.2%</td><td>40</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="win-foot">Drop chance per kill, approximate</div>
+        </div>
+      </div>
+      <figcaption>A simulated session with example numbers. Pause it, reset it, or <a href="#real">see the real thing</a>.</figcaption>
+    </figure>
+  </div>
+
+  <svg class="hills" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#8fdc6a" d="M0 150V92c90-40 190-58 300-38 120 22 190 64 320 44 140-22 220-86 380-78 150 8 240 62 440 40v90z"/>
+    <path fill="#4cb944" d="M0 150v-36c120-34 250-30 380 2 150 36 260 20 420-16 180-40 380-36 640 30v20z"/>
+  </svg>
+</header>
+<div class="ledge"></div>
+
+<main>
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What it tracks</h2>
+        <p class="subhead">One overlay, and every number you need to judge a map.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="win feature f-7">
+          <div class="win-bar"><span class="coin"></span>Monsters Here</div>
+          <div class="win-body">
+            <h3>See what a map drops before you farm it</h3>
+            <p>Every monster on your map, its drops, and the real odds, before you commit to farming it.</p>
+            <div class="mock mock-box" aria-hidden="true">
+              <table class="drops">
+                <tbody>
+                  <tr class="mob"><th>Jr. Necki</th><th colspan="2">Lv 21</th></tr>
+                  <tr class="got"><td>Jr. Necki Skin</td><td>40%</td><td>21</td></tr>
+                  <tr><td>Topaz Ore</td><td>0.2%</td><td>80</td></tr>
+                  <tr class="mob"><th>Ligator</th><th colspan="2">Lv 31</th></tr>
+                  <tr class="got"><td>Ligator Skin</td><td>50%</td><td>31</td></tr>
+                  <tr><td>White Potion</td><td>1%</td><td>35</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+        <article class="win feature f-5">
+          <div class="win-bar"><span class="coin"></span>Net profit</div>
+          <div class="win-body">
+            <h3>Net mesos after potions</h3>
+            <p>What you actually earn, not the gross.</p>
+            <div class="mock sum" aria-hidden="true">
+              <div><span>Mesos + items sold to NPC</span><span class="c-gold">87,011/hr</span></div>
+              <div><span>Potions used</span><span class="c-red">&minus;16,772/hr</span></div>
+              <div><span>Net</span><span class="dmg">70,239<small>/hr</small></span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="win feature f-4">
+          <div class="win-bar"><span class="coin"></span>Rates</div>
+          <div class="win-body">
+            <h3>EXP and mesos per hour</h3>
+            <p>Auto-paused when you're idle or in town, so breaks don't drag your rate down.</p>
+            <div class="mock mock-box timeline" aria-hidden="true">
+              <div><span>The Murky Swamp II</span><span class="status-chip on">Tracking</span></div>
+              <div><span>Kerning City</span><span class="status-chip off">Paused</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="win feature f-4">
+          <div class="win-bar"><span class="coin"></span>Items</div>
+          <div class="win-body">
+            <h3>Every item, correctly named</h3>
+            <p>Each pickup is listed by name with its own NPC value. No garbled guesses.</p>
+            <ul class="mock loot" style="min-height:0" aria-hidden="true">
+              <li><span>Ligator Skin</span><span>&times;12</span><span>372</span></li>
+              <li><span>Mithril Ore</span><span>&times;2</span><span>80</span></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="win feature f-4">
+          <div class="win-bar"><span class="coin"></span>Runs</div>
+          <div class="win-body">
+            <h3>Per-map history</h3>
+            <p>Save a run and compare every spot you've farmed.</p>
+            <ul class="mock maps" aria-hidden="true">
+              <li><span>Ant Tunnel III</span><b>best</b><span class="bar"><i style="width:86%"></i></span></li>
+              <li><span>The Murky Swamp II</span><b></b><span class="bar"><i style="width:61%"></i></span></li>
+            </ul>
+          </div>
+        </article>
+
+        <div class="readonly">
+          <h3>Read-only, always.</h3>
+          <ul>
+            <li><strong>Screen only</strong>It reads pixels from your own screen, the same as a screen recorder.</li>
+            <li><strong>Never files or memory</strong>It doesn't read or write game files or game memory.</li>
+            <li><strong>Never sends input</strong>Nothing here acts on the game. It only watches.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="section" id="tech">
-    <h2>Smarter than a spreadsheet</h2>
-    <p class="subhead">One optimized model, trained on MapleStory Classic itself - not a per-map script someone had to configure.</p>
-    <div class="tech-statement reveal">
-      <span class="accent">Every map zone.</span> No setup. No garbled guesses.
-    </div>
-    <div class="tech-tags reveal">
-      <span class="tech-tag">Trained on MapleStory Classic</span>
-      <span class="tech-tag">Closed-vocabulary matching</span>
-      <span class="tech-tag">Tells you when it isn't sure</span>
+  <section class="section proof" id="real">
+    <div class="wrap proof-grid">
+      <div>
+        <h2>Smarter than a spreadsheet</h2>
+        <p class="subhead">One optimized model, trained on MapleStory Classic itself. Not a per-map script someone had
+           to configure.</p>
+        <ul class="proof-list" id="tech">
+          <li><strong>Every map zone, no setup</strong>Open the game and it starts reading. There's nothing to configure per map.</li>
+          <li><strong>Closed-vocabulary matching</strong>Names are matched against a fixed list, so you never get a garbled guess.</li>
+          <li><strong>Tells you when it isn't sure</strong>If a reading is uncertain, the overlay says so instead of making something up.</li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <img src="assets/screenshot.png" width="672" height="573" loading="lazy" alt="Meso Tracker overlay next to its Monsters Here panel, showing EXP/hr, mesos/hr, items picked up and monster drop rates over a live MapleStory Classic game screen">
+        <figcaption>The real overlay and its Monsters Here panel, running over The Murky Swamp II.</figcaption>
+      </figure>
     </div>
   </section>
 
   <section class="section" id="vs-trackers">
-    <h2>How it stacks up against other trackers</h2>
-    <p class="subhead">Every one of these reads your screen only, same as Meso Tracker. The difference is what they do with what they see.</p>
-    <div class="compare-scroll">
-      <div class="compare-table compare-table--wide reveal" role="table" aria-label="Meso Tracker compared to other MapleStory Classic trackers">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it stacks up against other trackers</h2>
+        <p class="subhead">Every one of these reads your screen only, same as Meso Tracker. The difference is what they
+           do with what they see.</p>
+      </div>
+      <p class="compare-hint">Scroll sideways to see the other trackers.</p>
+      <div class="compare-scroll">
+      <div class="compare-table " role="table" aria-label="Meso Tracker compared to other MapleStory Classic trackers">
         <div class="compare-row compare-head" role="row">
           <div role="columnheader"></div>
           <div role="columnheader" class="compare-us">Meso Tracker</div>
@@ -203,76 +368,89 @@
           <div class="no" role="cell">Not listed</div>
         </div>
       </div>
-    </div>
-    <p class="compare-note">Based on each tool's own public pages as of November 2026 - features move fast, so check their sites for the latest.
-       Independent, fan-made tools; not affiliated with Meso Tracker or with each other.</p>
-  </section>
-
-  <section class="section" id="pricing">
-    <h2>Pricing</h2>
-    <p class="subhead">Cheaper than a single NX item, and it pays for itself the first time it keeps you off a bad map.</p>
-    <div class="card pricing-card reveal">
-      <div class="pricing-badge">7-day free cancel, no questions</div>
-      <div>Meso Tracker</div>
-      <div class="plan-switch" role="radiogroup" aria-label="Billing plan">
-        <label class="plan-opt is-selected">
-          <input type="radio" name="plan" value="monthly" checked>
-          <span class="plan-name">Monthly</span>
-          <span class="plan-price">$1.99<small>/mo</small></span>
-        </label>
-        <label class="plan-opt">
-          <input type="radio" name="plan" value="6mo">
-          <span class="plan-save">Save 33%</span>
-          <span class="plan-name">6 Months</span>
-          <span class="plan-price">$8<small>/6mo</small></span>
-        </label>
-        <label class="plan-opt">
-          <input type="radio" name="plan" value="yearly">
-          <span class="plan-save">Save 58%</span>
-          <span class="plan-name">Yearly</span>
-          <span class="plan-price">$10<small>/yr</small></span>
-        </label>
       </div>
-      <ul>
-        <li><span class="coin-tick"></span>Full overlay, every feature above</li>
-        <li><span class="coin-tick"></span>Free updates while subscribed</li>
-        <li><span class="coin-tick"></span>Cancel any time, no questions asked</li>
-        <li><span class="coin-tick"></span>One PC per subscription (switch any time in Settings)</li>
-      </ul>
-      <form id="buy-form">
-        <input type="email" id="email" placeholder="you@email.com" required>
-        <button type="submit" id="buy-btn" class="btn">Subscribe - $1.99/mo</button>
-        <div id="checkout-error"></div>
-      </form>
-      <p class="note">You'll get your download link and licence key by email right after payment, handled securely by Stripe -
-         this site never sees your card details.</p>
+      <p class="compare-note">Based on each tool's own public pages as of November 2026. Features move fast, so check
+         their sites for the latest. Independent, fan-made tools; not affiliated with Meso Tracker or with each other.</p>
     </div>
   </section>
 
-  <section class="section">
-    <h2>FAQ</h2>
-    <p class="subhead">&nbsp;</p>
-    <details class="faq-item reveal" open>
-      <summary>Will this get me banned? <span class="chev">&#9662;</span></summary>
-      <div class="faq-body">It only reads pixels from your own screen, the same as a screen recorder - it never reads or writes game
-         memory or files, and never sends input. We can't make promises about any game's rules, but there is nothing here that
-         acts on the game, only something that watches your screen.</div>
-    </details>
-    <details class="faq-item reveal">
-      <summary>How does the licence work? <span class="chev">&#9662;</span></summary>
-      <div class="faq-body">One licence runs on one PC at a time. The app fingerprints your PC on first launch; moving to a new
-         PC is a click in Settings ("Deactivate this device"), no email needed.</div>
-    </details>
-    <details class="faq-item reveal">
-      <summary>What if I lose my licence key? <span class="chev">&#9662;</span></summary>
-      <div class="faq-body">Use "Manage billing" with the email you purchased with - it also resends your key.</div>
-    </details>
-    <details class="faq-item reveal">
-      <summary>Can I get a refund? <span class="chev">&#9662;</span></summary>
-      <div class="faq-body">Cancel any time and you won't be charged again; email us for anything else.</div>
-    </details>
+  <section class="band" id="pricing">
+    <div class="wrap pricing-grid">
+      <div>
+        <span class="guarantee">7-day free cancel, no questions</span>
+        <h2>Cheaper than a single NX item.</h2>
+        <p class="subhead">It pays for itself the first time it keeps you off a bad map.</p>
+        <ul class="includes">
+          <li><span class="coin-tick"></span>Full overlay, every feature above</li>
+          <li><span class="coin-tick"></span>Free updates while subscribed</li>
+          <li><span class="coin-tick"></span>Cancel any time, no questions asked</li>
+          <li><span class="coin-tick"></span>One PC per subscription (switch any time in Settings)</li>
+        </ul>
+      </div>
+
+      <div class="win pricing-card">
+        <div class="win-bar"><span class="coin"></span>Choose a plan</div>
+        <div class="win-body">
+          <div class="plan-switch" role="radiogroup" aria-label="Billing plan">
+            <label class="plan-opt is-selected">
+              <input type="radio" name="plan" value="monthly" checked>
+              <span class="plan-name">Monthly</span>
+              <span class="plan-price">$1.99<small>/mo</small></span>
+            </label>
+            <label class="plan-opt">
+              <input type="radio" name="plan" value="6mo">
+              <span class="plan-save">Save 33%</span>
+              <span class="plan-name">6 months</span>
+              <span class="plan-price">$8<small>/6mo</small></span>
+            </label>
+            <label class="plan-opt">
+              <input type="radio" name="plan" value="yearly">
+              <span class="plan-save">Save 58%</span>
+              <span class="plan-name">Yearly</span>
+              <span class="plan-price">$10<small>/yr</small></span>
+            </label>
+          </div>
+          <form id="buy-form">
+            <label class="field" for="email">Email for your licence key</label>
+            <input type="email" id="email" placeholder="you@email.com" autocomplete="email" required>
+            <button type="submit" id="buy-btn" class="btn btn-block">Subscribe for $1.99/mo</button>
+            <div id="checkout-error" role="alert"></div>
+          </form>
+          <p class="note">You'll get your download link and licence key by email right after payment. Payment is
+             handled securely by Stripe, and this site never sees your card details.</p>
+        </div>
+      </div>
+    </div>
   </section>
-</div>
+
+  <section class="section" id="faq">
+    <div class="wrap faq-grid">
+      <h2>Questions</h2>
+      <div>
+        <details class="faq-item" open>
+          <summary>Will this get me banned? <span class="chev" aria-hidden="true">&#9662;</span></summary>
+          <div class="faq-body">It only reads pixels from your own screen, the same as a screen recorder. It never reads or writes game
+             memory or files, and never sends input. We can't make promises about any game's rules, but there is nothing here that
+             acts on the game, only something that watches your screen.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How does the licence work? <span class="chev" aria-hidden="true">&#9662;</span></summary>
+          <div class="faq-body">One licence runs on one PC at a time. The app fingerprints your PC on first launch; moving to a new
+             PC is a click in Settings ("Deactivate this device"), no email needed.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if I lose my licence key? <span class="chev" aria-hidden="true">&#9662;</span></summary>
+          <div class="faq-body">Use "Manage billing" with the email you purchased with. It also resends your key.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I get a refund? <span class="chev" aria-hidden="true">&#9662;</span></summary>
+          <div class="faq-body">Cancel any time and you won't be charged again; email us for anything else.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
 <footer>
   <div class="disclaimer">Meso Tracker is an independent, unofficial tool. It is not affiliated with, endorsed by, or
     associated with Nexon, MapleStory, or MesoWatch. MapleStory is a trademark of its respective owner.</div>
