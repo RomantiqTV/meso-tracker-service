@@ -51,6 +51,10 @@ class Settings:
         # How many devices one license may be active on at once (self-serve deactivate frees a slot - see /v1/deactivate)
         self.max_activations = int(os.environ.get("MAX_ACTIVATIONS", "1"))
 
+        # Shared secret for the one-off /v1/admin/* endpoints (see main.py). Blank disables them entirely - set this
+        # in Render only for the duration of a specific admin task, then clear it again.
+        self.admin_key = os.environ.get("ADMIN_KEY", "")
+
 
 settings = Settings()
 

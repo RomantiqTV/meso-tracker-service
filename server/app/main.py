@@ -1,13 +1,14 @@
 """The Meso Tracker licence server. Run locally:  uvicorn app.main:app --reload --port 8000  (from server/, with env vars set -
 see ../../SETUP.md). On Render, render.yaml points at this same app."""
 import logging
+import time
 
 import stripe
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-from . import billing, db, ratelimit, repo, security, versioning
+from . import billing, db, email, ratelimit, repo, security, versioning
 from .config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -211,3 +212,28 @@ def deactivate(body: DeactivateBody, request: Request):
         repo.log_activation(cur, lic["id"], "deactivate", lic["hwid"], _client_ip(request), "")
         conn.commit()
     return {"ok": True}
+
+
+# ---------------------------------------------------------------------------------------------------------------------- one-off admin
+@app.post("/v1/admin/broadcast-update")
+def broadcast_update(request: Request, x_admin_key: str = Header(default="")):
+    """Manual, one-off tool: emails every currently-active/trialing customer the update announcement (see
+    email.send_update_announcement). Disabled unless ADMIN_KEY is set in the environment; set it in Render only for
+    the duration of this task, call this once with ?dry_run=true to sanity-check the recipient count, then once for
+    real, then clear ADMIN_KEY again. Never exposed to the website or the app - admin-only, by design."""
+    if not settings.admin_key or x_admin_key != settings.admin_key:
+        raise HTTPException(404)
+    with db.connect() as conn:
+        cur = conn.cursor()
+        emails = repo.get_current_userbase_emails(cur)
+    if request.query_params.get("dry_run") == "true":
+        return {"recipients": len(emails), "sample": emails[:5]}
+    sent, failed = [], []
+    for to in emails:
+        try:
+            email.send_update_announcement(settings, to, settings.download_url)
+            sent.append(to)
+        except Exception as exc:
+            failed.append({"email": to, "error": str(exc)})
+        time.sleep(0.3)
+    return {"sent": len(sent), "failed": failed}

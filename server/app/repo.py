@@ -30,6 +30,16 @@ def upsert_subscription(cur, customer_id, stripe_subscription_id, status, curren
     )
 
 
+def get_current_userbase_emails(cur):
+    """Distinct emails of every customer with a currently active or trialing subscription - the people actually
+    running the app right now, as opposed to past/canceled customers who shouldn't be re-contacted."""
+    cur.execute(
+        "SELECT DISTINCT c.email FROM customers c JOIN subscriptions s ON s.customer_id = c.id "
+        "WHERE s.status IN ('active', 'trialing') ORDER BY c.email"
+    )
+    return [r["email"] for r in cur.fetchall()]
+
+
 def has_active_subscription(cur, customer_id):
     cur.execute(
         "SELECT 1 FROM subscriptions WHERE customer_id = %s AND status IN ('active', 'trialing') LIMIT 1",
