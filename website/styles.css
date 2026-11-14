@@ -105,13 +105,21 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 .hero-facts li { font-family: var(--ui); font-size: 14px; font-weight: 500; background: rgba(20, 70, 130, .35); border-radius: 999px; padding: 4px 13px; }
 
 /* pixel clouds: drawn once as an SVG symbol, placed as plain decoration */
-.cloud { position: absolute; z-index: 1; fill: #fff; opacity: .9; shape-rendering: crispEdges; pointer-events: none; }
-.cloud-a { width: 190px; top: 96px; left: 4%; opacity: .75; }
-.cloud-b { width: 260px; top: 56px; right: 30%; opacity: .5; }
-.cloud-c { width: 150px; top: 330px; left: 38%; opacity: .6; }
-.cloud-d { width: 220px; top: 120px; right: -40px; opacity: .8; }
+/* Parallax: script.js writes two numbers on the hero. --sy is the scroll offset, used by the clouds. --hy is how far
+   the hills are past the point 60% up the viewport (negative before it), used by the far hills, so they rise ahead of
+   the front hill as they come into view and sink behind it as they leave. Far layers lag the page; the front hill
+   moves with it. Without the script, or with reduced motion, both stay 0. */
+.hero { --sy: 0; --hy: 0; }
+.cloud { position: absolute; z-index: 1; fill: #fff; opacity: .9; shape-rendering: crispEdges; pointer-events: none;
+  transform: translate3d(0, calc(var(--sy) * var(--lag, .5) * 1px), 0); will-change: transform; }
+.cloud-a { width: 190px; top: 96px; left: 4%; opacity: .75; --lag: .45; }
+.cloud-b { width: 260px; top: 56px; right: 30%; opacity: .5; --lag: .72; }
+.cloud-c { width: 150px; top: 330px; left: 38%; opacity: .6; --lag: .6; }
+.cloud-d { width: 220px; top: 120px; right: -40px; opacity: .8; --lag: .3; }
 
-.hills { display: block; width: 100%; height: clamp(70px, 11vw, 150px); margin-top: 28px; position: relative; z-index: 1; }
+.hills { display: block; width: 100%; height: clamp(70px, 11vw, 150px); margin-top: 84px; position: relative; z-index: 1; overflow: visible; }
+.hill-far { transform: translateY(calc(var(--hy) * .17px)); }
+.hill-back { transform: translateY(calc(var(--hy) * .08px)); }
 .ledge { height: 16px; background: var(--leaf); border-top: 4px solid var(--leaf-hi); box-shadow: 0 6px 0 #8a5a2b; position: relative; z-index: 2; }
 
 /* --------------------------------------------------------------------------------------- overlay windows (.win) */
@@ -354,9 +362,10 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 .compare-note { color: var(--muted); font-size: 13.5px; max-width: 62em; margin-top: 18px; line-height: 1.5; }
 
 /* -------------------------------------------------------------------------------------------------- pricing (soil) */
-.band { background: var(--soil-2); color: #ffe9c4; border-top: 16px solid var(--leaf); box-shadow: inset 0 6px 0 #8a5a2b; padding: 96px 0 100px;
+.band { --by: 0; background: var(--soil-2); color: #ffe9c4; border-top: 16px solid var(--leaf); box-shadow: inset 0 6px 0 #8a5a2b; padding: 96px 0 100px;
   background-image: radial-gradient(circle at 12% 30%, rgba(255, 201, 60, .07) 0 3px, transparent 4px), radial-gradient(circle at 78% 64%, rgba(255, 201, 60, .06) 0 4px, transparent 5px), radial-gradient(circle at 44% 86%, rgba(255, 201, 60, .05) 0 3px, transparent 4px);
-  background-size: 340px 300px, 420px 380px, 300px 340px; }
+  background-size: 340px 300px, 420px 380px, 300px 340px;
+  background-position: 0 calc(var(--by) * .12px), 0 calc(var(--by) * .24px), 0 calc(var(--by) * .4px); }
 .band h2 { color: #fff; font-size: clamp(38px, 5vw, 60px); }
 .band .subhead { color: #f1cf9c; }
 .pricing-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 64px; align-items: center; }
