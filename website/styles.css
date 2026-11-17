@@ -91,7 +91,7 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 .hero {
   position: relative; overflow: hidden; color: #fff;
   background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 55%, var(--sky-3) 100%);
-  padding: 132px 0 0;
+  padding: 92px 0 0;
 }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px 44px; align-items: center; position: relative; z-index: 2; }
 .hero h1 {
@@ -252,7 +252,7 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 @media (max-width: 1000px) {
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .cloud-c { display: none; }
-  .hero { padding-top: 116px; }
+  .hero { padding-top: 78px; }
   .demo { max-width: 640px; }
 }
 @media (max-width: 600px) {
@@ -264,35 +264,18 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
   nav .btn { padding: 7px 12px !important; font-size: 14px; }
 }
 
-/* ------------------------------------------------------------------------------------------------- signboard */
-/* A wooden sign hung from the grass ledge by two ropes: the one place the page states plainly why to buy. */
-.sign-wrap { padding: 0 0 6px; }
-.sign {
-  position: relative; margin-top: 46px; padding: 34px 40px 36px; color: #fff2d2;
-  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 48px; align-items: center;
-  border: 4px solid var(--soil); border-radius: 18px;
-  background:
-    repeating-linear-gradient(180deg, transparent 0 58px, rgba(44, 20, 4, .38) 58px 60px),
-    linear-gradient(180deg, #9a6230, #7d4b20);
-  box-shadow: inset 0 3px 0 rgba(255, 214, 150, .28), inset 0 -4px 0 rgba(44, 20, 4, .35), 0 9px 0 var(--edge-soft);
+/* ------------------------------------------------------------------------------------------------ top banner */
+/* A gold ribbon across the top of the hero, just under the fixed nav: the short reasons to buy. */
+.topbar {
+  position: relative; z-index: 3; margin-bottom: 36px; padding: 9px 24px;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 55%, #f7b22c);
+  border-top: 3px solid var(--bark); border-bottom: 3px solid var(--bark); box-shadow: 0 5px 0 rgba(20, 70, 130, .28);
 }
-.sign::before, .sign::after {   /* the ropes */
-  content: ""; position: absolute; top: -50px; width: 8px; height: 50px; border: 2px solid var(--soil); border-width: 0 2px;
-  background: repeating-linear-gradient(135deg, #e3c27a 0 4px, #b08a45 4px 8px);
-}
-.sign::before { left: 9%; } .sign::after { right: 9%; }
-.sign h2 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.08; color: #fff; text-shadow: 0 4px 0 var(--soil); text-wrap: balance; }
-.sign-main p { margin-top: 14px; font-size: 17.5px; line-height: 1.55; max-width: 32em; }
-.sign-cta { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 22px; margin-top: 24px; }
-.sign-link { font-family: var(--ui); font-weight: 600; font-size: 16px; color: var(--gold-hi); }
-.sign-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-.sign-points li { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.45; padding-bottom: 16px; border-bottom: 2px dashed rgba(255, 226, 170, .32); }
-.sign-points li:last-child { border-bottom: 0; padding-bottom: 0; }
-.sign-points .coin { width: 22px; height: 22px; margin-top: 2px; border-color: var(--soil); }
-.sign-points strong { display: block; font-family: var(--ui); font-weight: 600; font-size: 18px; color: var(--gold); }
-@media (max-width: 860px) {
-  .sign { grid-template-columns: 1fr; padding: 28px 24px 30px; }
-}
+.topbar ul { list-style: none; margin: 0 auto; padding: 0; max-width: var(--page); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 30px; }
+.topbar li { display: flex; align-items: center; gap: 8px; font-family: var(--ui); font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--bark); }
+.topbar .coin { width: 16px; height: 16px; border-color: var(--bark); }
+.topbar a { color: var(--bark); text-underline-offset: 3px; }
+@media (max-width: 720px) { .topbar { padding: 8px 14px; margin-bottom: 28px; } .topbar ul { gap: 3px 18px; } .topbar li { font-size: 14px; } .topbar .more { display: none; } }
 
 /* ------------------------------------------------------------------------------------------------------- sections */
 .section { padding: 88px 0; }
