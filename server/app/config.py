@@ -41,6 +41,9 @@ class Settings:
         # Where the website's Buy button sends people after Stripe Checkout, and where the app download lives
         self.site_url = os.environ.get("SITE_URL", "http://localhost:8000")
         self.download_url = os.environ.get("DOWNLOAD_URL", "")       # set once you have a Release asset URL (see SETUP.md)
+        # The Microsoft Store page (https://apps.microsoft.com/detail/<product id>). Blank = the welcome email offers only the direct installer;
+        # set it once the Store listing is live and the email shows both ways to install.
+        self.store_url = os.environ.get("STORE_URL", "")
 
         # Auto-update advisory: edit these three env vars in Render whenever you ship a new build - no redeploy needed,
         # every client sees it on its next phone-home. Leave LATEST_VERSION blank to disable the update check entirely.
