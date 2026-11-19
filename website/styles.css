@@ -460,3 +460,8 @@ body.sky { min-height: 100vh; background: linear-gradient(180deg, var(--sky-1), 
 @keyframes flash { from { background-color: #ffe48a; } to { background-color: transparent; } }
 @keyframes fall { to { transform: translateY(105vh) rotate(380deg); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* legal pages reuse .article; these two additions are for them (and the footer links on every page) */
+.article h3 { font-family: var(--ui); font-weight: 600; font-size: 19px; color: var(--bark); margin: 22px 0 8px; }
+.footer-links { margin-bottom: 12px; font-size: 14px; }
+.footer-links a { color: inherit; font-weight: 700; text-decoration: underline; }
