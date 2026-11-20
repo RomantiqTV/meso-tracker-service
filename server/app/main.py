@@ -8,7 +8,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-from . import billing, db, email, ratelimit, repo, security, versioning
+from . import billing, contrib, db, email, ratelimit, repo, security, versioning
 from .config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -212,6 +212,45 @@ def deactivate(body: DeactivateBody, request: Request):
         repo.log_activation(cur, lic["id"], "deactivate", lic["hwid"], _client_ip(request), "")
         conn.commit()
     return {"ok": True}
+
+
+# ---------------------------------------------------------------------------------------------------------------------- opt-in failed-read contributions
+class ContribBody(BaseModel):
+    items: list[dict]
+
+
+def _contrib_who(authorization):
+    """Bearer session token (the one /v1/activate and /v1/status hand out) -> the uploader's keyed-hash id. 401 on anything wrong."""
+    scheme, _, token = (authorization or "").partition(" ")
+    if scheme.lower() != "bearer" or not token:
+        raise HTTPException(401, "Missing session token")
+    try:
+        payload = security.verify_session(settings.jwt_secret, token.strip())
+    except (security.TokenError, ValueError):
+        raise HTTPException(401, "Invalid or expired session")
+    return contrib.contributor_id(settings.key_pepper, payload.get("lid", ""))
+
+
+@app.post("/v1/contrib")
+def contrib_upload(body: ContribBody, authorization: str = Header(default="")):
+    """Stores crops of failed pickup-line reads from customers who opted in (contrib.py). 503 when the feature is not configured."""
+    store = contrib.get_store()
+    if store is None:
+        raise HTTPException(503, "Contributions are not enabled")
+    who = _contrib_who(authorization)
+    if not ratelimit.allow("contrib:" + who, max_per_window=12, window_s=60):
+        raise HTTPException(429, "Too many uploads, try again shortly")
+    return contrib.accept(store, who, body.items)
+
+
+@app.post("/v1/contrib/delete")
+def contrib_delete(authorization: str = Header(default="")):
+    """Deletes everything this licence ever contributed (the app's "Delete my contributed data" button)."""
+    store = contrib.get_store()
+    if store is None:
+        raise HTTPException(503, "Contributions are not enabled")
+    who = _contrib_who(authorization)
+    return {"deleted": store.delete_all(who)}
 
 
 # ---------------------------------------------------------------------------------------------------------------------- one-off admin
