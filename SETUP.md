@@ -99,3 +99,12 @@ git branch -M main
 git remote add origin https://github.com/<you>/meso-tracker-service.git
 git push -u origin main
 ```
+
+## Opt-in failed-read contributions (free)
+
+The app can send small crops of pickup lines it could not read (only for customers who switch "Help improve Meso Tracker" on) to `POST /v1/contrib`, which stores them in a **separate** Postgres so image bytes never touch the licence database.
+
+1. Create a second free Neon project (console.neon.tech -> New project, e.g. `meso-contrib`). The free tier is 0.5 GB; a crop is 1-3 KB, so roughly 200,000 fit.
+2. Copy its connection string (the **pooled** one is fine) and add it to the `meso-tracker-api` service in Render as `CONTRIB_DATABASE_URL`. The table is created on first use. Unset = the feature answers 503 and the app backs off for 6 hours.
+3. Optional caps (env, defaults shown): `CONTRIB_MAX_MB=300` (stop accepting at this total; keeps you well inside the free tier) and `CONTRIB_PER_DAY=300` (per licence per day).
+4. Pull the data to your PC with `server/scripts/pull_contrib.py` (needs `CONTRIB_DATABASE_URL` in your shell); `--delete-after` frees space once it is downloaded. The uploader column is a keyed hash; no email or licence id is stored.

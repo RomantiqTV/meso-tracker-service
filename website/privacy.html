@@ -24,17 +24,17 @@
   <article class="section article">
     <p class="article-back"><a href="index.html">&larr; Back to home</a></p>
     <h1 class="article-title">Privacy Policy</h1>
-    <p class="article-meta">Last updated: 20 November 2026</p>
+    <p class="article-meta">Last updated: 21 November 2026</p>
 
 <p>This policy explains what Meso Tracker (&ldquo;we&rdquo;, &ldquo;us&rdquo;), operated by Developer Griff, collects when you use the Meso Tracker desktop app and the
-mesotracker.pro website, why, and what your choices are. Short version: the app reads your game screen <strong>on your own PC</strong> and keeps what it reads there.
+mesotracker.pro website, why, and what your choices are. Short version: the app reads your game screen <strong>on your own PC</strong> and keeps what it reads there, <strong>unless you choose to switch on the optional &ldquo;Help improve Meso Tracker&rdquo; setting</strong> (section 2).
 We only receive the small amount of information needed to run your subscription and licence.</p>
 
 <h2>1. What the app does on your PC</h2>
 <ul>
 <li>Meso Tracker reads the pixels of your MapleStory Classic window (screen capture, text recognition and template matching) to work out EXP, mesos, items picked up and supplies used. It
 never reads the game&rsquo;s memory or files, never touches the game&rsquo;s network traffic, and never sends keyboard or mouse input to the game.</li>
-<li>Screenshots, the numbers it reads, your session totals and your settings stay on your computer, in the app&rsquo;s own folder under your user profile. They are not uploaded to us.</li>
+<li>Screenshots, the numbers it reads, your session totals and your settings stay on your computer, in the app&rsquo;s own folder under your user profile. They are not uploaded to us, with one optional exception you control: see &ldquo;Help improve Meso Tracker&rdquo; below.</li>
 <li>If you turn on the optional recording features for troubleshooting, the recordings are also saved only on your PC. They are off by default.</li>
 </ul>
 
@@ -53,6 +53,17 @@ ties your licence to one device at a time.</li>
 <li>An <strong>activation log</strong>: when the app activates, re-checks or deactivates, we record the event type, the hashed device ID, your <strong>IP address</strong>, the app version and the
 time. We use it to prevent key sharing and to diagnose problems.</li>
 </ul>
+<h3>Help improve Meso Tracker (optional, off by default)</h3>
+<p>When the app cannot read a line of the pickup feed (an item name or quantity), it can send us a small picture of <strong>just that one line</strong> so we can train the readers on more
+players&rsquo; games. The app asks you once, with &ldquo;No&rdquo; as the default, and you can change your mind at any time in Settings &gt; Account. If you do not say Yes, nothing is sent.</p>
+<ul>
+<li><strong>What is sent:</strong> a picture a few rows tall of the pickup text, the app version, your game window size, and a short note on why the read failed (including the text the app
+managed to read from that line, if any).</li>
+<li><strong>What is never sent:</strong> screenshots, chat, your character name, the map, your email address or your licence key. We store the sender only as a keyed one-way hash of your licence,
+so a picture cannot be traced back to your account without our secret key, and we do not do that.</li>
+<li><strong>Your control:</strong> switch it off at any time and nothing more is sent. &ldquo;Delete my contributed data&rdquo; in Settings &gt; Account deletes everything your licence contributed from
+our server. Pictures are otherwise kept for as long as we are using them to improve the readers.</li>
+</ul>
 <h3>Update checks</h3>
 <p>Each time the app starts it asks our server which version is newest. Like any web request, this reveals your IP address to the server.</p>
 <h3>Website</h3>
@@ -67,6 +78,7 @@ time. We use it to prevent key sharing and to diagnose problems.</li>
 <li>To provide the app: confirm your subscription is active, bind your licence to one device and deliver updates.</li>
 <li>To take payment, send your receipt, licence key and service emails, and handle refunds and support.</li>
 <li>To protect the service against key sharing, fraud and abuse, and to keep it secure.</li>
+<li>If you opt in: to train and test the app&rsquo;s item and number readers. Contributed pictures are used for nothing else and are not shared or sold.</li>
 <li>To meet legal, tax and accounting obligations.</li>
 </ul>
 <p>We do not sell your information, we do not show advertising, and we do not build profiles of you. We only email you about your purchase, your licence, security and important changes to the
@@ -77,7 +89,8 @@ service (for example a required update).</p>
 <ul>
 <li><strong>Stripe</strong> &ndash; payments, subscriptions and the billing portal.</li>
 <li><strong>Resend</strong> &ndash; sending transactional email (receipt, licence key, notices).</li>
-<li><strong>Render</strong> &ndash; hosting the licence server, its database and this website.</li>
+<li><strong>Render</strong> &ndash; hosting the licence server and this website.</li>
+<li><strong>Neon</strong> &ndash; hosting the database (licence records and, only if you opt in, the pickup-line pictures you contribute).</li>
 <li><strong>GitHub</strong> &ndash; hosting the installer download; GitHub sees the IP address of the downloader.</li>
 <li><strong>Microsoft</strong> &ndash; if you install Meso Tracker from the Microsoft Store, Microsoft handles that download and updates under its own privacy statement.</li>
 </ul>
