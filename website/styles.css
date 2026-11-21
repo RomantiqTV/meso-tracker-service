@@ -509,3 +509,28 @@ body.sky { min-height: 100vh; background: linear-gradient(180deg, var(--sky-1), 
 .article h3 { font-family: var(--ui); font-weight: 600; font-size: 19px; color: var(--bark); margin: 22px 0 8px; }
 .footer-links { margin-bottom: 12px; font-size: 14px; }
 .footer-links a { color: inherit; font-weight: 700; text-decoration: underline; }
+
+/* ---------------------------------------------------------------------------------------- example-screenshot label + the setup guide */
+.tour-kicker { margin: 0 0 8px; font-family: var(--ui); font-weight: 600; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--orange-dk); }
+.article.guide { max-width: 900px; }
+.guide-toc { margin: 0 0 34px; padding: 18px 22px; background: var(--panel); border: 3px solid var(--bark); border-radius: 14px; box-shadow: 0 5px 0 var(--edge-soft); }
+.guide-toc strong { display: block; margin-bottom: 8px; font-family: var(--ui); font-size: 17px; color: var(--bark); }
+.guide-toc ol { columns: 2; column-gap: 28px; margin: 0; padding-left: 22px; }
+.guide-toc li { font-size: 16px; margin-bottom: 4px; break-inside: avoid; }
+@media (max-width: 640px) { .guide-toc ol { columns: 1; } }
+.article.guide h2 { scroll-margin-top: 90px; }
+.callout { padding: 14px 18px; background: #fff0c4; border: 2px solid var(--edge); border-left: 8px solid var(--orange); border-radius: 10px; }
+.guide .shot { margin: 18px 0 24px; }
+.guide .shot.guide-mini { max-width: 372px; }
+.guide .shot.guide-mini img { border-width: 3px; box-shadow: 0 6px 0 var(--edge); }
+.guide-dl { display: grid; gap: 4px; margin: 22px 0 8px; }
+.guide-dl dt { margin-top: 14px; font-family: var(--ui); font-weight: 600; font-size: 18px; color: var(--bark); }
+.guide-dl dd { margin: 0; font-size: 16.5px; line-height: 1.65; color: var(--muted); }
+.shot-frame.anat { max-width: 640px; margin: 8px auto 6px; background: var(--panel); border: 3px solid var(--bark); border-radius: 14px; box-shadow: 0 6px 0 var(--edge); }
+.shot-frame.anat img { display: block; width: 100%; height: auto; }
+@media (min-width: 1000px) {
+  .shot-frame.anat img { width: 58%; }
+  .shot-frame .box.t-left .tag { left: auto; right: 100%; margin-left: 0; margin-right: 10px; padding: 4px 16px 4px 11px; clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%); }
+}
+.article.guide table th { white-space: nowrap; }
+.fig-cap { max-width: 640px; margin: 10px auto 22px; font-size: 14px; color: var(--muted); }

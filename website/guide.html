@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overlay Setup Guide - Meso Tracker</title>
+<meta name="description" content="How to set up the Meso Tracker overlay for MapleStory Classic: supported game resolutions, the minimap and quickslot setup, every setting explained, and fixes for common problems.">
+<link rel="canonical" href="https://mesotracker.pro/guide.html">
+<link rel="icon" type="image/png" href="assets/favicon-32.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+  <a href="./" class="brand"><img src="assets/logo-520.png" width="520" height="158" alt="Meso Tracker" class="brand-logo"><span class="brand-tag">for MapleStory Classic</span></a>
+  <div class="nav-links">
+    <a href="blog/" class="nav-link">Guides</a>
+    <a href="support.html" class="nav-link optional">Support</a>
+    <a href="index.html#pricing" class="btn">Try it free for 5 days</a>
+  </div>
+</nav>
+<div class="nav-spacer"></div>
+
+<div class="wrap">
+  <article class="section article guide">
+    <p class="article-back"><a href="index.html">&larr; Back to home</a></p>
+    <h1 class="article-title">Overlay setup guide</h1>
+    <p class="article-meta">Everything you need to set Meso Tracker up properly, what every setting does, and what to try when something looks off.</p>
+
+    <div class="guide-toc" role="navigation" aria-label="On this page">
+      <strong>On this page</strong>
+      <ol>
+        <li><a href="#quick">Quick start</a></li>
+        <li><a href="#game">Set up the game</a></li>
+        <li><a href="#resolutions">Supported resolutions</a></li>
+        <li><a href="#minimap">The minimap (for map detection)</a></li>
+        <li><a href="#accuracy">Item detection accuracy</a></li>
+        <li><a href="#window">The overlay window</a></li>
+        <li><a href="#settings">Every setting explained</a></li>
+        <li><a href="#runs">Saving and comparing runs</a></li>
+        <li><a href="#trouble">Troubleshooting</a></li>
+        <li><a href="#account">Account, trial and moving PC</a></li>
+      </ol>
+    </div>
+
+    <h2 id="quick">1. Quick start</h2>
+    <ol>
+      <li><strong>Install and log in.</strong> Use the email and licence key from your purchase or free-trial email. Your trial days start the first time you log in.</li>
+      <li><strong>Start MapleStory Classic</strong> at one of the <a href="#resolutions">supported window sizes</a>.</li>
+      <li><strong>Expand your minimap</strong> (click the <b>+</b> on it) so the map name shows in its blue header. <a href="#minimap">See how it should look</a>.</li>
+      <li><strong>Keep the pickup feed, the EXP number and your quickslots visible</strong>, and keep other windows off the game. <a href="#game">Details below</a>.</li>
+      <li><strong>Farm.</strong> The overlay starts tracking straight away. When you reach your spot, press <b>Reset</b> twice for a clean run. Press <b>Pause</b> for breaks (it also pauses itself when idle).</li>
+    </ol>
+    <p class="callout"><b>Good to know:</b> Meso Tracker only reads pixels from your screen. It never reads the game&rsquo;s memory or files and never sends any input, so you keep playing exactly as normal.</p>
+
+    <h2 id="game">2. Set up the game</h2>
+    <p>The overlay reads what the game draws on screen. These are the things it needs to be able to see.</p>
+    <figure class="shot guide-shot">
+      <div class="shot-frame">
+        <img src="assets/real-murky-swamp.jpg" width="1920" height="1080" loading="lazy" alt="Example screenshot of MapleStory Classic with the parts the overlay reads outlined: the expanded minimap in the top left, the pickup feed area on the right, the quickslots and the EXP number along the bottom">
+        <span class="box" style="left:0%;top:0%;width:16.8%;height:21.8%" aria-hidden="true"><em class="tag">Expanded minimap</em></span>
+        <span class="box t-left" style="left:76%;top:66%;width:24%;height:15.5%" aria-hidden="true"><em class="tag">Pickup feed</em></span>
+        <span class="box" style="left:68.5%;top:81.3%;width:10.8%;height:9.7%" aria-hidden="true"><em class="tag">Quickslots</em></span>
+        <span class="box" style="left:52.8%;top:95.6%;width:9%;height:2.2%" aria-hidden="true"><em class="tag">EXP number</em></span>
+      </div>
+      <figcaption>Example screenshot. The outlined parts are what the overlay reads. Names and chat are blurred.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Window mode:</strong> windowed or fullscreen both work. If you change size or switch between them while the overlay runs, it notices within about a second and re-adjusts by itself.</li>
+      <li><strong>Pickup feed (right side of the game screen):</strong> mesos, EXP and item pickups are read from the fading lines the game prints there. Keep that area clear of other windows and don&rsquo;t cover it with other programs.</li>
+      <li><strong>EXP number:</strong> keep the status bar along the bottom visible, with the EXP number and percentage showing (for example <i>EXP. 16,756 [13.65%]</i>). It is used for EXP/hr and time to level.</li>
+      <li><strong>Quickslots (supplies used):</strong> the overlay watches the stack counts in your 8 quickslots (<b>Q E R T</b> on the top row, <b>Z X C V</b> on the bottom) and counts a use whenever a stack goes down. Put your potions and food there and keep the quickslot bar on screen. Slots holding skills, or empty slots, are simply ignored.</li>
+      <li><strong>Keep the game visible:</strong> the game window can&rsquo;t be minimised, and other windows shouldn&rsquo;t sit on top of the minimap, feed, quickslots or EXP bar. The overlay itself is hidden from screen capture by default, so it never gets in its own way (see <a href="#settings">Display settings</a>).</li>
+      <li><strong>Window size, not monitor size:</strong> the sizes below mean the size of the game&rsquo;s window (its client area), not your monitor. If a size is not on the list, set the game to one that is.</li>
+    </ul>
+
+    <h2 id="resolutions">3. Supported resolutions</h2>
+    <table>
+      <thead><tr><th>Game window size</th><th>Status</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1366 &times; 768</td><td>Best tested</td><td>The size most of our testing was done at, including long live sessions.</td></tr>
+        <tr><td class="num">1920 &times; 1080</td><td>Supported</td><td>Tested on recorded sessions and live checks. Item, EXP and quickslot reading all work.</td></tr>
+        <tr><td class="num">2560 &times; 1440</td><td>Supported</td><td>Tested on recorded sessions; it has had less live testing than the two above.</td></tr>
+        <tr><td>Anything else</td><td>Not supported</td><td>The overlay will still start, but item reading falls back to an older method and can be badly wrong. Use one of the sizes above.</td></tr>
+      </tbody>
+    </table>
+    <p>More sizes will be added over time; each release lists what changed. If you need a size that isn&rsquo;t here, email <a href="mailto:support@mesotracker.pro">support@mesotracker.pro</a> and tell us which.</p>
+
+    <h2 id="minimap">4. The minimap (needed for map detection)</h2>
+    <p>The overlay finds your current map by reading the <strong>header of the minimap</strong>: the blue strip that shows the area (for example <i>Hidden Street</i>) and the map name (for example <i>The Murky Swamp II</i>). That header only appears when the minimap is <strong>expanded</strong>. If the minimap is collapsed to a small icon, there is no map name on screen to read.</p>
+    <figure class="shot guide-mini">
+      <img src="assets/guide-minimap.png" width="372" height="322" loading="lazy" alt="Example screenshot of the expanded MapleStory Classic minimap: the blue header shows the area name Hidden Street and the map name The Murky Swamp II above the map thumbnail">
+      <figcaption>Example screenshot: the minimap in the form the overlay needs. The header shows the area and the map name, and the map thumbnail sits underneath.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Click the <b>+</b> on the minimap</strong> until the header with the map name is showing. (The <b>&minus;</b> next to it collapses it again, so leave the minimap expanded.)</li>
+      <li>The minimap can sit anywhere on screen and you can drag it around; the overlay finds it by its look, not its position.</li>
+      <li>Don&rsquo;t let another window or the game&rsquo;s own panels cover the header.</li>
+      <li>When the map changes, the new name shows up in about two seconds. If it ever looks stale, click the <b>&#x27F3;</b> button on the overlay to re-read it.</li>
+      <li>If the overlay can&rsquo;t find the minimap at all, it says <b>&ldquo;Minimap closed? Click its + to expand it&rdquo;</b>. If it finds it but doesn&rsquo;t recognise the name (an event map, for example) it says <b>&ldquo;Map name undetected, please refresh&rdquo;</b>.</li>
+    </ul>
+    <p>Why it matters: the map name tells the overlay which monsters and drops to show in the <b>Monsters panel</b>, and it labels your saved runs so you can compare maps later.</p>
+
+    <h2 id="accuracy">5. Item detection accuracy</h2>
+    <p>Items, mesos and EXP are read from the pickup feed the moment a line appears. In our own test sessions:</p>
+    <ul>
+      <li><strong>At 1366 &times; 768:</strong> in a 17-minute test run the overlay counted 443 of 449 pickup lines (98.7%), and an independent hand count of one session matched 96 of 97 lines with no wrong values. Item names read correctly 60 times out of 66, with <strong>0 wrong</strong>: when it isn&rsquo;t sure it shows an &ldquo;Unrecognised&rdquo; row instead of guessing (see <a href="#trouble">troubleshooting</a>).</li>
+      <li><strong>At 1920 &times; 1080 and 2560 &times; 1440:</strong> our recorded test sessions counted every line we checked (17 of 17 and 30 of 30), but those samples are smaller, so treat them as a good sign rather than a guarantee.</li>
+    </ul>
+    <p class="callout"><b>Honest note:</b> these figures come from our own test recordings, not from every possible game scene. Heavy scenery behind the feed, a very busy screen, or a covered feed area can lower accuracy. Item <em>values</em> use NPC sell prices, so they are an estimate of what an item is worth, not what you&rsquo;ll get on the market.</p>
+
+    <h2 id="window">6. The overlay window</h2>
+    <p>The overlay is a small always-on-top window that docks to the bottom-right of the monitor the game is on. Clicking it never steals keyboard focus from the game. Here is what each part does.</p>
+    <div class="shot-frame anat">
+      <img src="assets/guide-overlay.png" width="372" height="700" loading="lazy" alt="Example screenshot of the Meso Tracker overlay panel showing the title bar, map and clock, the Experience, Loot and Supplies sections, the net per hour box, the stacks line and the button row">
+      <span class="box" style="left:3.9%;top:1.4%;width:53%;height:3.7%" aria-hidden="true"><em class="tag">Status and buttons</em></span>
+      <span class="box" style="left:3.9%;top:5.4%;width:53%;height:5.8%" aria-hidden="true"><em class="tag">Map and clock</em></span>
+      <span class="box" style="left:3.9%;top:12.9%;width:53%;height:14.6%" aria-hidden="true"><em class="tag">Experience</em></span>
+      <span class="box" style="left:3.9%;top:28.3%;width:53%;height:30.6%" aria-hidden="true"><em class="tag">Loot</em></span>
+      <span class="box" style="left:3.9%;top:59.2%;width:53%;height:19.7%" aria-hidden="true"><em class="tag">Supplies used</em></span>
+      <span class="box" style="left:3.9%;top:79.7%;width:53%;height:9.4%" aria-hidden="true"><em class="tag">Net after potions</em></span>
+      <span class="box" style="left:3.9%;top:90.3%;width:53%;height:2.9%" aria-hidden="true"><em class="tag">Stacks line</em></span>
+      <span class="box" style="left:3.9%;top:93.6%;width:53%;height:3.9%" aria-hidden="true"><em class="tag">Buttons</em></span>
+    </div>
+    <p class="fig-cap">Example screenshot of the overlay after a 30-minute session.</p>
+    <dl class="guide-dl">
+      <dt>Status and buttons</dt>
+      <dd>The pill shows <b>Tracking</b> or <b>Paused</b>; click it to toggle. <b>&#x27F3;</b> re-reads the map name. <b>&minus; / +</b> collapses the panel to its bar and brings it back. <b>&times;</b> closes the app.</dd>
+      <dt>Map and clock</dt>
+      <dd>The area and map name from your minimap, and the run timer. The timer only counts while tracking is on.</dd>
+      <dt>Experience</dt>
+      <dd>EXP gained, kills, EXP per hour, level percentage gained per hour, and the estimated time to your next level at the current pace.</dd>
+      <dt>Loot</dt>
+      <dd>Mesos picked up and per hour, items picked up, and their total value at NPC sell prices. The list underneath shows every item with its quantity and value. The <b>sort</b> button cycles the list through newest, value, quantity and A-Z; scroll it with the mouse wheel or the arrows. A red <b>Unrecognised</b> row is a line the app wasn&rsquo;t sure about: click it to name the item yourself, and the correction is applied to this run straight away.</dd>
+      <dt>Supplies used</dt>
+      <dd>Each potion or food you used, how many, and what they cost. <b>Potion cost / hour</b> adds them up. Cost is the NPC shop price or market price, whichever you chose in <a href="#settings">Settings &rsaquo; Gameplay</a>.</dd>
+      <dt>Net after potions</dt>
+      <dd><b>Theoretical gross / hr</b> is your mesos plus everything sold to an NPC. <b>Net after potions / hr</b> subtracts your supply costs. It is the number to compare maps by.</dd>
+      <dt>Stacks line</dt>
+      <dd>A small diagnostic: the stack counts it can currently read in your 8 quickslots (a <b>?</b> means nothing was read there), your EXP value, and how long its last full reading took. It is useful when asking for support.</dd>
+      <dt>Buttons</dt>
+      <dd><b>Pause / Resume</b> stops and restarts counting. <b>Reset</b> needs a second click within three seconds, then starts a fresh run, and everything on screen at that moment is ignored. <b>Save Run</b> writes the run to a file. <b>Runs</b> opens the folder of saved runs. The gear opens Settings.</dd>
+      <dt>Moving and resizing</dt>
+      <dd>Drag the title bar to move the overlay. Drag the bottom-right corner to show more or less of the panel. The small arrow tab on the edge opens and closes the <b>Monsters panel</b>, which lists the monsters on your map and what they drop, with the chance of each drop and what it sells for. Items you have already picked up this run get a green tick.</dd>
+      <dt>Auto-pause</dt>
+      <dd>After a minute with no EXP, mesos, items or potions, the overlay pauses itself so breaks don&rsquo;t drag your rates down, and resumes the moment play starts again. It never overrides a pause you clicked yourself. You can change the delay in Settings.</dd>
+    </dl>
+
+    <h2 id="settings">7. Every setting explained</h2>
+    <p>Open Settings with the gear button on the overlay. Click <b>Apply</b> to save, or <b>Close</b> to leave without applying.</p>
+
+    <h3>Account</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Email, Subscription, Trial ends / Renews, Version</td><td>Shows who is logged in, whether your subscription or free trial is active, when it ends or renews, and the app version.</td></tr>
+        <tr><td>Subscribe / Manage subscription</td><td>Opens the plans page during a free trial, or your billing page once you subscribe, in your browser.</td></tr>
+        <tr><td>Deactivate this device</td><td>Frees your licence so you can log in on another PC. The app closes afterwards.</td></tr>
+        <tr><td>Help improve Meso Tracker</td><td>Optional and off by default. If you turn it on, the app can send a small picture of a few rows of pickup text that it couldn&rsquo;t read, so the readers can improve. It never sends screenshots, chat, your character name or your account. You can turn it off or delete what you sent at any time. See the <a href="privacy.html">privacy policy</a>.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Gameplay</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Quickslot Q (heal) item, Quickslot E (mana) item</td><td>The names of your heal and mana items. The app identifies what is in your slots from their icons; these names are the fallback if it can&rsquo;t.</td></tr>
+        <tr><td>Potion cost counted as</td><td><b>NPC shop price</b> values each used potion at what the shop sells it for. <b>Market price</b> uses the going market price.</td></tr>
+        <tr><td>Reload prices</td><td>Re-reads the price list the app is using. The line above it shows which list and when it was generated.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Display</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Theme</td><td>The overlay&rsquo;s colour scheme: Day, Night, Slime or Pink Bean. Applies the next time you start the app.</td></tr>
+        <tr><td>Monsters panel side</td><td>Which side the Monsters panel opens on when both are free. It normally opens on whichever side has room.</td></tr>
+        <tr><td>Opacity</td><td>How see-through the overlay is, from 50% to 100%.</td></tr>
+        <tr><td>Item list rows</td><td>How many items the Loot list shows at once (3 to 20).</td></tr>
+        <tr><td>Auto-pause after idle</td><td>Seconds of nothing before the overlay pauses itself. Set 0 to turn auto-pause off.</td></tr>
+        <tr><td>Hide the overlay from screen recordings</td><td>On by default. It keeps the overlay out of recordings and streams, and out of the picture the app reads. Turn it off only if you want to record or stream the overlay itself (for a demo video, say), and turn it back on afterwards.</td></tr>
+        <tr><td>Level-up</td><td>Shows a celebration screen when you level. Preview shows it once.</td></tr>
+        <tr><td>Bar</td><td>Pick which rates appear in the bar right under the map: Net / hr, Gross / hr, EXP / hr, Mesos / hr, Items / hr, Potion cost / hr and Kills / hr.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Panel</h3>
+    <p>Tick exactly which rows the full panel shows: EXP gained, Kills, EXP / hour, Level % / hour, Time to level, Mesos picked up, Mesos / hour, Items picked up, Item value (NPC), the item list, per-item supply lines, Potion cost / hour, Theoretical gross / hr, and Net after potions / hr. Unticked rows take no space, and a section heading disappears if everything under it is off.</p>
+
+    <h3>Top bar</h3>
+    <p>An optional wide strip you can place anywhere on screen, for when you want your numbers visible without the full panel.</p>
+    <table>
+      <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Show the wide top bar</td><td>Turns the strip on or off. It is off by default.</td></tr>
+        <tr><td>Where</td><td>Top centre, top left or top right of the game, or Free to put it wherever you drag it. Dragging it by an empty part switches this to Free.</td></tr>
+        <tr><td>What&rsquo;s on it</td><td>A list of everything it can show: the title, status, EXP and loot blocks, individual rates and totals, the clock, the map name, and the Pause, Reset and Settings buttons. Tick to show, and use Up and Down to change the order, left to right. Reset to default restores the standard layout.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="runs">8. Saving and comparing runs</h2>
+    <ul>
+      <li>Press <b>Save Run</b> when you finish a spot. It saves the map, the times and every total to a file, and adds a row to a summary sheet.</li>
+      <li>Press <b>Runs</b> to open the folder. You can open the summary in a spreadsheet to compare maps side by side.</li>
+      <li>The overlay also autosaves when you close it.</li>
+      <li>For a fair comparison between two maps, run each for the same length of time with the same supplies, and remember drops are luck: a single 30-minute run can swing a lot.</li>
+    </ul>
+
+    <h2 id="trouble">9. Troubleshooting</h2>
+
+    <h3>The overlay says &ldquo;MapleStory not found&rdquo; or &ldquo;game minimised&rdquo;</h3>
+    <p>Start the game, and keep its window open on screen. A minimised game can&rsquo;t be read.</p>
+
+    <h3>&ldquo;Minimap closed? Click its + to expand it&rdquo;</h3>
+    <p>The minimap is collapsed or hidden. Click the <b>+</b> on it so the header with the map name shows, and make sure nothing is covering it. <a href="#minimap">See the example</a>.</p>
+
+    <h3>&ldquo;Map name undetected, please refresh&rdquo;</h3>
+    <ul>
+      <li>Click <b>&#x27F3;</b> on the overlay to re-read the map.</li>
+      <li>Check the minimap header is fully visible and not overlapped.</li>
+      <li>Some event or special maps aren&rsquo;t in the map list. Your numbers still count; only the map name and Monsters panel are affected.</li>
+    </ul>
+
+    <h3>Mesos, EXP or items aren&rsquo;t counting</h3>
+    <ul>
+      <li>Check the overlay isn&rsquo;t <b>Paused</b>. The status pill and the Pause / Resume button show it. It may have auto-paused after being idle.</li>
+      <li>Make sure the game window is one of the <a href="#resolutions">supported sizes</a>.</li>
+      <li>Keep the pickup feed area on the right of the game screen clear. Another window over it blocks the reading.</li>
+      <li>Check &ldquo;Hide the overlay from screen recordings&rdquo; is still ticked in Settings &rsaquo; Display.</li>
+      <li>If you just changed size or went between windowed and fullscreen and it didn&rsquo;t settle after a few seconds, restart the app.</li>
+    </ul>
+
+    <h3>EXP or time to level looks stuck</h3>
+    <p>The EXP number and percentage on the game&rsquo;s bottom status bar must be visible and not covered. Time to level also needs a little time at the current pace before it shows.</p>
+
+    <h3>An item shows as &ldquo;Unrecognised&rdquo;</h3>
+    <p>The app preferred to flag a name it wasn&rsquo;t sure about rather than guess. Click the red row and pick or type the right name. Its quantity is already counted.</p>
+
+    <h3>Supplies used shows nothing, or the Stacks line has ?</h3>
+    <ul>
+      <li>The quickslot bar has to be on screen with your potions or food in it.</li>
+      <li>A <b>?</b> means nothing was read in that slot. That&rsquo;s normal for empty slots or slots holding skills.</li>
+      <li>Costs show &ldquo;?&rdquo; when the item isn&rsquo;t in the price list. Check the names in Settings &rsaquo; Gameplay.</li>
+    </ul>
+
+    <h3>I can&rsquo;t see the overlay</h3>
+    <p>It docks to the bottom-right of the monitor the game is on. If it is collapsed to its bar, click <b>+</b> to bring the panel back. If you dragged it somewhere you can&rsquo;t find, close and reopen the app, or use the top bar (Settings &rsaquo; Top bar) as a second place to see your numbers.</p>
+
+    <h3>My recording or stream doesn&rsquo;t show the overlay</h3>
+    <p>That is deliberate. Turn off &ldquo;Hide the overlay from screen recordings&rdquo; in Settings &rsaquo; Display for the recording, then turn it back on.</p>
+
+    <h3>Windows blocked the installer</h3>
+    <p>See <a href="support.html">Support</a> for SmartScreen and Smart App Control steps. The Microsoft Store version avoids both.</p>
+
+    <h3>Still stuck?</h3>
+    <p>Email <a href="mailto:support@mesotracker.pro">support@mesotracker.pro</a> from the address you signed up with. Please include your app version (Settings &rsaquo; Account), your game window size, and a screenshot of the overlay with the Stacks line showing. Blur your character name and other players&rsquo; names and chat before sending.</p>
+
+    <h2 id="account">10. Account, trial and moving PC</h2>
+    <ul>
+      <li><strong>Free trial:</strong> 5 days, no card. Your days start the first time you log in with the key we emailed. When the trial ends the app stops until you subscribe, and subscribing with the same email keeps the same key.</li>
+      <li><strong>One PC at a time:</strong> a licence works on one device at a time. Use <b>Deactivate this device</b> in Settings &rsaquo; Account, or accept the prompt on a new PC.</li>
+      <li><strong>Updates:</strong> the app tells you when a new version is out. The Store version updates through the Microsoft Store.</li>
+      <li><strong>Billing and cancelling:</strong> see <a href="refunds.html">Refunds &amp; Cancellation</a>.</li>
+    </ul>
+
+    <p class="article-cta"><a href="index.html#pricing" class="btn">Try it free for 5 days</a></p>
+  </article>
+</div>
+<footer>
+  <div class="footer-links"><a href="guide.html">Setup Guide</a> &middot; <a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms of Use</a> &middot; <a href="refunds.html">Refunds &amp; Cancellation</a> &middot; <a href="support.html">Support</a></div>
+  <div class="disclaimer">Meso Tracker is an independent, unofficial tool. It is not affiliated with, endorsed by, or
+    associated with Nexon, MapleStory, or MesoWatch. MapleStory is a trademark of its respective owner.</div>
+  &copy; Meso Tracker
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

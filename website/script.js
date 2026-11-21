@@ -103,20 +103,23 @@ document.querySelectorAll("[data-tour]").forEach((tab) => {
     });
   });
 });
-document.querySelectorAll("[data-tour-panel]").forEach((panel) => {
-  const frame = panel.querySelector(".shot-frame");
-  const set = (n, on) => {
-    frame.classList.toggle("has-focus", on);
-    frame.querySelectorAll(".box").forEach((b) => b.classList.toggle("is-hot", on && b.dataset.n === n));
-  };
+const spot = (frame, n, on) => {
+  frame.classList.toggle("has-focus", on);
+  frame.querySelectorAll(".box").forEach((b) => b.classList.toggle("is-hot", on && b === n));
+};
+document.querySelectorAll(".shot-frame").forEach((frame) => {
   frame.querySelectorAll(".box").forEach((b) => {
-    b.addEventListener("mouseenter", () => set(b.dataset.n, true));
-    b.addEventListener("mouseleave", () => set(b.dataset.n, false));
+    b.addEventListener("mouseenter", () => spot(frame, b, true));
+    b.addEventListener("mouseleave", () => spot(frame, b, false));
   });
-  document.querySelectorAll(".tour-legend li").forEach((li) => {
-    li.addEventListener("mouseenter", () => { if (!panel.hidden) set(li.dataset.n, true); });
-    li.addEventListener("mouseleave", () => set(li.dataset.n, false));
-  });
+});
+document.querySelectorAll(".tour-legend li").forEach((li) => {
+  const target = () => {
+    const panel = document.querySelector("[data-tour-panel]:not([hidden])");
+    return panel && { frame: panel.querySelector(".shot-frame"), box: panel.querySelector('.box[data-n="' + li.dataset.n + '"]') };
+  };
+  li.addEventListener("mouseenter", () => { const t = target(); if (t && t.box) spot(t.frame, t.box, true); });
+  li.addEventListener("mouseleave", () => { const t = target(); if (t && t.box) spot(t.frame, t.box, false); });
 });
 
 // ---------------------------------------------------------------------------------------------------- nav shrink
