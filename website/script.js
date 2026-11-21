@@ -92,7 +92,7 @@ const trialForm = document.getElementById("trial-form");
 if (trialForm) trialForm.addEventListener("submit", startTrial);
 
 // ---------------------------------------------------------------------------------------------- real-session tour
-// Two real screenshots behind tabs; the numbered markers and the legend only show on wide screens (CSS). Hovering a legend item lifts its marker.
+// Two real screenshots behind tabs; the numbered markers and the legend only show on wide screens (CSS). Hovering a frame or its legend entry spotlights that part and dims the rest.
 document.querySelectorAll("[data-tour]").forEach((tab) => {
   tab.addEventListener("click", () => {
     document.querySelectorAll("[data-tour]").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
@@ -103,10 +103,20 @@ document.querySelectorAll("[data-tour]").forEach((tab) => {
     });
   });
 });
-document.querySelectorAll(".tour-legend li").forEach((li) => {
-  const lift = (on) => document.querySelectorAll('.mark[data-n="' + li.dataset.n + '"]').forEach((m) => m.classList.toggle("is-hot", on));
-  li.addEventListener("mouseenter", () => lift(true));
-  li.addEventListener("mouseleave", () => lift(false));
+document.querySelectorAll("[data-tour-panel]").forEach((panel) => {
+  const frame = panel.querySelector(".shot-frame");
+  const set = (n, on) => {
+    frame.classList.toggle("has-focus", on);
+    frame.querySelectorAll(".box").forEach((b) => b.classList.toggle("is-hot", on && b.dataset.n === n));
+  };
+  frame.querySelectorAll(".box").forEach((b) => {
+    b.addEventListener("mouseenter", () => set(b.dataset.n, true));
+    b.addEventListener("mouseleave", () => set(b.dataset.n, false));
+  });
+  document.querySelectorAll(".tour-legend li").forEach((li) => {
+    li.addEventListener("mouseenter", () => { if (!panel.hidden) set(li.dataset.n, true); });
+    li.addEventListener("mouseleave", () => set(li.dataset.n, false));
+  });
 });
 
 // ---------------------------------------------------------------------------------------------------- nav shrink

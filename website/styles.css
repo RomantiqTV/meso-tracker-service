@@ -358,21 +358,21 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 .tour-tabs button[aria-selected="true"] { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--bark); box-shadow: inset 0 -2px 0 rgba(184, 90, 10, .35); }
 .tour-tabs button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .tour-shot[hidden] { display: none; }
-.shot-frame { position: relative; }
-.shot-frame .mark, .tour-legend { display: none; }
+.shot-frame { position: relative; overflow: hidden; border-radius: 10px; }
+.shot-frame .box { display: none; }
 @media (min-width: 1000px) {
-  .shot-frame .mark { display: grid; position: absolute; width: 30px; height: 30px; border-radius: 50%; place-items: center; transform: translate(-50%, -50%);
-    font-family: var(--ui); font-weight: 700; font-size: 15px; color: var(--bark); border: 2.5px solid var(--bark);
-    background: radial-gradient(circle at 35% 30%, #fff6c9, var(--gold) 60%, #f0a21d); box-shadow: 0 3px 0 rgba(44, 20, 4, .55); transition: transform .15s; }
-  .shot-frame .mark.m-left::before { content: ""; position: absolute; right: 100%; top: 50%; width: 20px; height: 3px; margin-top: -1.5px; background: var(--gold); border-radius: 2px; box-shadow: 0 0 0 1px var(--bark); }
-  .shot-frame .mark.m-below::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 3px; height: 16px; margin-left: -1.5px; background: var(--gold); border-radius: 2px; box-shadow: 0 0 0 1px var(--bark); }
-  .shot-frame .mark.is-hot { transform: translate(-50%, -50%) scale(1.25); }
-  .tour-legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; list-style: none; padding: 0; margin: 26px 0 0; }
-  .tour-legend li { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 12px; border: 2px solid transparent; font-size: 14px; line-height: 1.4; color: var(--muted); }
-  .tour-legend li:hover { background: var(--panel); border-color: var(--edge-soft); }
-  .tour-legend b { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; font-family: var(--ui); font-size: 14px; color: var(--bark);
-    border: 2px solid var(--bark); background: radial-gradient(circle at 35% 30%, #fff6c9, var(--gold) 60%, #f0a21d); }
-  .tour-legend strong { display: block; font-family: var(--ui); font-weight: 600; font-size: 16px; color: var(--bark); }
+  /* each part of the overlay gets a frame and a flag naming it; hover one (or its legend entry) and the rest of the picture dims */
+  .shot-frame .box { display: block; position: absolute; border: 2px solid var(--gold); border-radius: 5px; box-shadow: 0 0 0 1px rgba(44, 20, 4, .65), 0 0 10px rgba(255, 201, 60, .55);
+    transition: box-shadow .25s, border-color .25s; cursor: default; }
+  .shot-frame .box .tag { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 10px; padding: 4px 11px 4px 16px; white-space: nowrap;
+    font-style: normal; font-family: var(--ui); font-weight: 600; font-size: 14px; color: var(--bark); background: linear-gradient(var(--gold-hi), var(--gold));
+    clip-path: polygon(0 50%, 11px 0, 100% 0, 100% 100%, 11px 100%); filter: drop-shadow(0 2px 0 rgba(44, 20, 4, .6)); }
+  .shot-frame.has-focus .box:not(.is-hot) { opacity: .35; }
+  .shot-frame .box.is-hot { border-color: #fff; box-shadow: 0 0 0 100vmax rgba(26, 12, 3, .6), 0 0 16px rgba(255, 228, 138, .95); z-index: 2; }
+  .tour-legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 26px 0 0; }
+  .tour-legend li { padding: 12px 14px; border-radius: 12px; border: 2px solid var(--edge-soft); background: var(--panel); font-size: 14px; line-height: 1.4; color: var(--muted); cursor: default; transition: transform .15s, border-color .15s; }
+  .tour-legend li:hover { border-color: var(--orange); transform: translateY(-2px); }
+  .tour-legend strong { display: block; margin-bottom: 2px; font-family: var(--ui); font-weight: 600; font-size: 16px; color: var(--bark); }
 }
 
 /* -------------------------------------------------------------------------------------------------------- compare */
