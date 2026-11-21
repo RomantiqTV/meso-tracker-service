@@ -100,6 +100,21 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
   margin: 0 0 22px;
 }
 .hero .lead { font-size: 19px; line-height: 1.55; font-weight: 700; max-width: 30em; color: #fff; text-shadow: 0 1px 0 rgba(15, 70, 135, .6); }
+.store-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+.store-note { font-family: var(--body); font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(44, 20, 4, .55); }
+.store-badge { display: inline-flex; align-items: center; gap: 12px; padding: 9px 20px 9px 14px; border-radius: 12px; background: #15100b; color: #fff; text-decoration: none;
+  border: 1.5px solid #4a3a2a; box-shadow: 0 6px 18px rgba(44, 20, 4, .28); transition: transform .15s, box-shadow .15s, border-color .15s; }
+.store-badge:hover { transform: translateY(-2px); border-color: var(--gold); box-shadow: 0 10px 24px rgba(44, 20, 4, .34); }
+.store-badge:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.store-badge .ms-logo { width: 28px; height: 28px; flex: none; }
+.store-badge span { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
+.store-badge small { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .02em; opacity: .8; }
+.store-badge strong { font-family: var(--ui); font-size: 19px; font-weight: 600; letter-spacing: .01em; }
+.store-inline { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 16px; padding-top: 14px; border-top: 2px dashed var(--edge-soft);
+  font-family: var(--body); font-size: 14px; font-weight: 700; color: var(--muted); }
+.store-inline .store-badge { padding: 6px 14px 6px 10px; }
+.store-inline .store-badge .ms-logo { width: 22px; height: 22px; }
+.store-inline .store-badge strong { font-size: 15px; }
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
 .hero-facts { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 10px; padding: 0; margin: 26px 0 0; }
 .hero-facts li { font-family: var(--ui); font-size: 14px; font-weight: 500; background: rgba(20, 70, 130, .35); border-radius: 999px; padding: 4px 13px; }
