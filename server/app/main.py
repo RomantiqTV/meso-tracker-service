@@ -8,7 +8,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-from . import billing, contrib, db, email, ratelimit, repo, security, versioning
+from . import billing, contrib, db, email, ratelimit, repo, security, trials, versioning
 from .config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -81,6 +81,8 @@ def billing_portal(body: PortalBody):
             if customer else None
         if not customer or not lic:
             raise HTTPException(401, "Invalid email or licence key")
+    if not customer["stripe_customer_id"]:                  # a free-trial customer has no Stripe customer yet: "Manage billing" leads to the plans instead
+        return {"url": settings.site_url + "/#pricing"}
     return {"url": billing.create_billing_portal_session(settings, customer["stripe_customer_id"])}
 
 
@@ -127,6 +129,9 @@ def _authenticate(cur, email, license_key, app_version=""):
     if not lic:
         raise HTTPException(401, "Invalid email or licence key")
     if not repo.has_active_subscription(cur, customer["id"]):
+        trial = repo.get_trial(cur, customer["id"])
+        if trial and trial["status"] == "trialing":             # a trial row that is still 'trialing' but no longer live = its days ran out
+            raise HTTPException(402, trials.ended_message(settings))
         raise HTTPException(402, "Your subscription isn't active - update your payment method and try again")
     return customer, lic
 
@@ -152,6 +157,12 @@ def activate(body: ActivateBody, request: Request):
         cur = conn.cursor()
         customer, lic = _authenticate(cur, email, body.license_key, body.app_version)
         if lic["hwid"] is None:
+            try:
+                trials.on_bind(settings, cur, customer["id"], body.hwid)       # free trial: one PC per trial, and the first activation starts the clock
+            except trials.TrialError as e:
+                repo.log_activation(cur, lic["id"], "denied_trial_device", body.hwid, ip, body.app_version)
+                conn.commit()
+                raise HTTPException(e.status, e.message)
             repo.bind_hwid(cur, lic["id"], body.hwid)
             event = "activate"
         elif lic["hwid"] == body.hwid:
@@ -163,10 +174,10 @@ def activate(body: ActivateBody, request: Request):
                                       "'Deactivate this device' in Settings, then try again here.")
         repo.log_activation(cur, lic["id"], event, body.hwid, ip, body.app_version)
         account = _account_info(cur, customer["id"])
+        ttl, grace = trials.session_limits(settings, cur, customer["id"])
         conn.commit()
-    token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, settings.session_ttl_hours)
-    return {"session_token": token, "expires_in_hours": settings.session_ttl_hours, "offline_grace_hours": settings.offline_grace_hours,
-            **account, **_version_info()}
+    token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, ttl)
+    return {"session_token": token, "expires_in_hours": ttl, "offline_grace_hours": grace, **account, **_version_info()}
 
 
 class StatusBody(BaseModel):
@@ -191,9 +202,40 @@ def status(body: StatusBody, request: Request):
         if lic["hwid"] != body.hwid:
             raise HTTPException(409, "This licence is active on a different PC")
         account = _account_info(cur, customer["id"])
-    token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, settings.session_ttl_hours)
-    return {"session_token": token, "expires_in_hours": settings.session_ttl_hours, "offline_grace_hours": settings.offline_grace_hours,
-            **account, **_version_info()}
+        ttl, grace = trials.session_limits(settings, cur, customer["id"])
+    token = security.issue_session(settings.jwt_secret, str(customer["id"]), str(lic["id"]), body.hwid, ttl)
+    return {"session_token": token, "expires_in_hours": ttl, "offline_grace_hours": grace, **account, **_version_info()}
+
+
+class TrialBody(BaseModel):
+    email: EmailStr
+
+
+@app.post("/v1/trial")
+def start_trial(body: TrialBody, request: Request):
+    """Free trial, no card: creates a customer + licence + trial and EMAILS the key (the email is the verification). The TRIAL_DAYS clock starts when the app is first opened with that key."""
+    ip = _client_ip(request)
+    mail = body.email.strip().lower()
+    if not ratelimit.allow("trial:" + ip, max_per_window=6, window_s=3600) or not ratelimit.allow("trialmail:" + mail, max_per_window=3, window_s=3600):
+        raise HTTPException(429, "Too many attempts, try again later")
+    with db.connect() as conn:
+        cur = conn.cursor()
+        try:
+            raw_key = trials.sign_up(settings, cur, mail, ip)
+        except trials.TrialError as e:
+            raise HTTPException(e.status, e.message)
+        except Exception as e:                                       # e.g. a race on the unique email / mailbox constraints
+            if type(e).__name__ == "UniqueViolation":
+                raise HTTPException(409, "That email has already had a free trial or has an account.")
+            raise
+        try:
+            email.send_trial_welcome(settings, mail, raw_key, settings.download_url, settings.trial_days)
+        except Exception:
+            conn.rollback()                                          # nothing was created: they can simply try again
+            log.exception("trial welcome email did not send")
+            raise HTTPException(502, "We couldn't send the email just now. Please try again in a minute.")
+        conn.commit()
+    return {"ok": True, "days": settings.trial_days}
 
 
 class DeactivateBody(BaseModel):

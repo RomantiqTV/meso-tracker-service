@@ -57,6 +57,40 @@ async function startCheckout(ev) {
 const form = document.getElementById("buy-form");
 if (form) form.addEventListener("submit", startCheckout);
 
+// ------------------------------------------------------------------------------------------------- free trial
+// POST /v1/trial {email}: the server emails the licence key (no card). The 5 days start when the app is first opened with it.
+async function startTrial(ev) {
+  ev.preventDefault();
+  const btn = document.getElementById("trial-btn");
+  const msg = document.getElementById("trial-msg");
+  const email = ((document.getElementById("trial-email") || {}).value || "").trim();
+  const show = (text, ok) => { msg.textContent = text; msg.className = ok ? "is-ok" : "is-error"; };
+  msg.className = "";
+  btn.disabled = true;
+  btn.textContent = "Sending your key...";
+  try {
+    const res = await fetch(`${API_BASE}/v1/trial`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const detail = typeof data.detail === "string" ? data.detail : (res.status === 422 ? "Please enter a valid email address." : "");
+      throw new Error(detail || "trial_failed");
+    }
+    show(`Check your inbox: we sent your licence key to ${email}. Install the app, log in with that email and key, and your ${data.days || 5} free days begin. (Not there? Look in spam.)`, true);
+    btn.textContent = "Key sent";
+  } catch (e) {
+    show(e && e.message && e.message !== "trial_failed" && !/fetch|network/i.test(e.message) ? e.message : "Couldn't start your trial. Please try again in a moment.", false);
+    btn.disabled = false;
+    btn.textContent = "Start my free trial";
+  }
+}
+
+const trialForm = document.getElementById("trial-form");
+if (trialForm) trialForm.addEventListener("submit", startTrial);
+
 // ---------------------------------------------------------------------------------------------------- nav shrink
 const navEl = document.querySelector("nav");
 if (navEl) {

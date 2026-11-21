@@ -22,7 +22,9 @@ for k, v in dict(DATABASE_URL="x", STRIPE_SECRET_KEY="sk_test_x", STRIPE_WEBHOOK
 
 from fastapi.testclient import TestClient  # noqa: E402
 
-from app import main, security  # noqa: E402
+import datetime  # noqa: E402
+
+from app import main, security, trials  # noqa: E402
 
 
 class FakeStore:
@@ -34,9 +36,11 @@ class FakeStore:
         self.active_customers = set()
         self.subscriptions = {}      # customer_id -> {"status": ..., "current_period_end": ...}
         self.log = []
+        self.trials = {}             # customer_id -> {"id", "started_at", "status", "ends_at", "canon", "ip", "created"}
+        self.trial_devices = {}      # hwid -> trial id
 
-    def add_customer(self, email):
-        row = {"id": str(uuid.uuid4()), "email": email, "stripe_customer_id": "cus_" + email}
+    def add_customer(self, email, sid="default"):
+        row = {"id": str(uuid.uuid4()), "email": email, "stripe_customer_id": ("cus_" + email) if sid == "default" else sid}
         self.customers[email] = row
         return row
 
@@ -64,7 +68,56 @@ def fake_repo_for(store):
 
         @staticmethod
         def has_active_subscription(cur, customer_id):
+            t = store.trials.get(customer_id)
+            if t and t["status"] == "trialing" and (t["ends_at"] is None or t["ends_at"] > datetime.datetime.now(datetime.timezone.utc)):
+                return True
             return customer_id in store.active_customers
+
+        @staticmethod
+        def get_trial(cur, customer_id):
+            return store.trials.get(customer_id)
+
+        @staticmethod
+        def get_trial_by_canon(cur, canon):
+            return next((t for t in store.trials.values() if t["canon"] == canon), None)
+
+        @staticmethod
+        def count_trials_from_ip(cur, ip, hours=24):
+            return sum(1 for t in store.trials.values() if t["ip"] == ip)
+
+        @staticmethod
+        def create_trial(cur, customer_id, canon, ip):
+            t = {"id": str(uuid.uuid4()), "started_at": None, "status": "trialing", "ends_at": None, "canon": canon, "ip": ip}
+            store.trials[customer_id] = t
+            return t
+
+        @staticmethod
+        def start_trial(cur, trial_id, days):
+            t = next(x for x in store.trials.values() if x["id"] == trial_id)
+            if t["ends_at"] is None:
+                t["started_at"] = datetime.datetime.now(datetime.timezone.utc)
+                t["ends_at"] = t["started_at"] + datetime.timedelta(days=days)
+            return t["ends_at"]
+
+        @staticmethod
+        def trial_device_owner(cur, hwid):
+            return store.trial_devices.get(hwid)
+
+        @staticmethod
+        def add_trial_device(cur, hwid, trial_id):
+            store.trial_devices.setdefault(hwid, trial_id)
+
+        @staticmethod
+        def convert_trial(cur, customer_id):
+            t = store.trials.get(customer_id)
+            if t and t["status"] == "trialing":
+                t["status"] = "converted"
+                return 1
+            return 0
+
+        @staticmethod
+        def get_live_license_for_customer(cur, customer_id):
+            return next((l for l in store.licenses.values() if l["customer_id"] == customer_id and l["revoked_at"] is None), None)
 
         @staticmethod
         def get_subscription_for_customer(cur, customer_id):
@@ -88,11 +141,13 @@ def fake_repo_for(store):
 
         @staticmethod
         def create_customer(cur, email, sid):
-            return store.add_customer(email)
+            return store.customers.get(email) or store.add_customer(email, sid)
 
         @staticmethod
         def create_license(cur, customer_id, key_hash, hint, max_act):
-            raise AssertionError("not used in these tests")
+            row = {"id": str(uuid.uuid4()), "customer_id": customer_id, "key_hash": key_hash, "key_hint": hint, "hwid": None, "max_activations": max_act, "revoked_at": None}
+            store.licenses[row["id"]] = row
+            return row
 
         @staticmethod
         def upsert_subscription(cur, customer_id, sub_id, status, period_end):
@@ -125,10 +180,11 @@ class LicenseFlowTests(unittest.TestCase):
         self.store.active_customers.add(self.customer["id"])
         self.raw_key = "MESO-WXYZ-ABCD-EFGH-JKLM"
         self.lic = self.store.add_license(self.customer, self.raw_key)
-        patcher1 = mock.patch.object(main, "repo", fake_repo_for(self.store))
-        patcher2 = mock.patch.object(main.db, "connect", fake_connect)
-        patcher1.start(); patcher2.start()
-        self.addCleanup(patcher1.stop); self.addCleanup(patcher2.stop)
+        fake = fake_repo_for(self.store)
+        patchers = [mock.patch.object(main, "repo", fake), mock.patch.object(trials, "repo", fake), mock.patch.object(main.db, "connect", fake_connect)]
+        for pt in patchers:
+            pt.start()
+            self.addCleanup(pt.stop)
         self.client = TestClient(main.app)
         self.hwid_a, self.hwid_b = "a" * 64, "b" * 64
 

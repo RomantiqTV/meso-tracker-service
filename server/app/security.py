@@ -64,7 +64,7 @@ def issue_session(secret, customer_id, license_id, hwid, ttl_hours):
     dependency for something this small; the client never decodes it, just stores and resends it."""
     now = int(time.time())
     header = _b64u_json({"alg": "HS256", "typ": "JWT"})
-    payload = _b64u_json({"cid": customer_id, "lid": license_id, "hwid": hwid, "iat": now, "exp": now + ttl_hours * 3600})
+    payload = _b64u_json({"cid": customer_id, "lid": license_id, "hwid": hwid, "iat": now, "exp": int(now + ttl_hours * 3600)})
     signing_input = header + b"." + payload
     sig = _b64u(hmac.new(secret.encode(), signing_input, hashlib.sha256).digest())
     return (signing_input + b"." + sig).decode()

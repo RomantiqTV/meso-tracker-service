@@ -52,6 +52,34 @@ def send_welcome(settings, to, license_key, download_url):
     return send(settings, to, "Your Meso Tracker licence key", html)
 
 
+def send_trial_welcome(settings, to, license_key, download_url, days):
+    html = f"""
+    <div style="font-family:Arial,sans-serif;max-width:480px;margin:auto">
+      <h2 style="color:#7a3b0c">Your {days}-day free trial of Meso Tracker</h2>
+      <p>No card was taken and nothing will be charged. Here's everything you need:</p>
+      <p style="font-size:13px;color:#555">Your licence key (you'll enter this once, the first time you open the app):</p>
+      <p style="font-size:20px;font-weight:bold;letter-spacing:1px;background:#fff4dc;border:1px solid #e3b46a;
+                 border-radius:8px;padding:12px;text-align:center">{license_key}</p>
+      {install_options_html(settings, download_url)}
+      <p style="font-size:13px;color:#555">Your {days} days start the first time you open the app and log in with this email and key, not today. The trial is one per person
+      and one PC. When it ends the app stops until you subscribe; subscribing at {settings.site_url}/#pricing with this same email keeps this same key.</p>
+      <p style="font-size:12px;color:#999">Not affiliated with Nexon or MapleStory. Reads your screen only; never touches game
+      files or memory, and never sends input.</p>
+    </div>"""
+    return send(settings, to, f"Your Meso Tracker {days}-day free trial", html)
+
+
+def send_trial_converted(settings, to):
+    html = """
+    <div style="font-family:Arial,sans-serif;max-width:480px;margin:auto">
+      <h2 style="color:#7a3b0c">Thanks for subscribing to Meso Tracker</h2>
+      <p>Your subscription is active. <strong>Keep using the licence key from your free-trial email</strong> - it is the same key, nothing to re-enter, and the app picks up
+      your subscription by itself the next time it checks in.</p>
+      <p style="font-size:13px;color:#555">Manage or cancel any time from Settings &gt; Account &gt; Manage subscription in the app.</p>
+    </div>"""
+    return send(settings, to, "Your Meso Tracker subscription is active", html)
+
+
 def send_payment_failed(settings, to):
     html = """
     <div style="font-family:Arial,sans-serif;max-width:480px;margin:auto">

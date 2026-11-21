@@ -54,6 +54,11 @@ class Settings:
         # How many devices one license may be active on at once (self-serve deactivate frees a slot - see /v1/deactivate)
         self.max_activations = int(os.environ.get("MAX_ACTIVATIONS", "1"))
 
+        # Free trial without a card (trials.py): TRIAL_DAYS starts at the first time the app is opened; TRIAL_ENABLED=0 switches sign-ups off; at most TRIAL_PER_IP_PER_DAY sign-ups per IP per day.
+        self.trial_days = int(os.environ.get("TRIAL_DAYS", "5"))
+        self.trial_enabled = os.environ.get("TRIAL_ENABLED", "1").strip().lower() not in ("0", "false", "no", "off", "")
+        self.trial_per_ip_per_day = int(os.environ.get("TRIAL_PER_IP_PER_DAY", "3"))
+
         # Shared secret for the one-off /v1/admin/* endpoints (see main.py). Blank disables them entirely - set this
         # in Render only for the duration of a specific admin task, then clear it again.
         self.admin_key = os.environ.get("ADMIN_KEY", "")

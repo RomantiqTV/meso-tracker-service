@@ -397,6 +397,14 @@ input[type=email] {
 input[type=email]:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(47, 134, 214, .22); }
 .note { font-family: var(--body); font-size: 13.5px; color: var(--muted); line-height: 1.5; margin-top: 14px; }
 #checkout-error { display: none; margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-family: var(--body); font-size: 14px; color: #8f2114; background: #fde3dc; border: 1.5px solid #f0a497; }
+.trial-box { margin: 0 0 4px; }
+.trial-title { display: block; font-size: 20px; font-weight: 700; margin: 2px 0 4px; }
+.trial-sub { font-family: var(--body); font-size: 14px; color: var(--muted); line-height: 1.45; margin: 0 0 12px; }
+#trial-msg { display: none; margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-family: var(--body); font-size: 14px; line-height: 1.45; }
+#trial-msg.is-error { display: block; color: #8f2114; background: #fde3dc; border: 1.5px solid #f0a497; }
+#trial-msg.is-ok { display: block; color: #1d5a22; background: #e3f6dc; border: 1.5px solid #9fd592; }
+.or-rule { display: flex; align-items: center; gap: 10px; margin: 18px 0 2px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.or-rule::before, .or-rule::after { content: ""; flex: 1; height: 2px; background: var(--edge); border-radius: 2px; }
 .guarantee { display: inline-block; font-family: var(--ui); font-weight: 600; font-size: 14px; color: var(--soil); background: var(--gold); border: 2px solid var(--bark); border-radius: 999px; padding: 3px 14px; margin-bottom: 18px; }
 @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; gap: 44px; } .band { padding: 72px 0; } }
 

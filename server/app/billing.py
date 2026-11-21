@@ -76,6 +76,16 @@ def handle_event(settings, conn, event):
             stripe.api_key = settings.stripe_secret_key
             sub = stripe.Subscription.retrieve(sub_id)
             repo.upsert_subscription(cur, customer["id"], sub.id, sub.status, _period_end(sub))
+        if repo.get_trial(cur, customer["id"]):
+            # A free-trial customer paying: their trial row stops counting and they KEEP the licence they already have (no second key, nothing to re-enter in the app).
+            repo.convert_trial(cur, customer["id"])
+            if repo.get_live_license_for_customer(cur, customer["id"]):
+                conn.commit()
+                try:
+                    email.send_trial_converted(settings, customer_email)
+                except Exception:
+                    log.exception("trial-converted email did not send")
+                return f"trial customer {customer['id']} subscribed, kept their licence"
         raw_key = security.generate_license_key()
         lic = repo.create_license(cur, customer["id"], security.hash_key(raw_key, settings.key_pepper),
                                    security.key_hint(raw_key), settings.max_activations)

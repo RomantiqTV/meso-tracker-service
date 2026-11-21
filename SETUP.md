@@ -108,3 +108,18 @@ The app can send small crops of pickup lines it could not read (only for custome
 2. Copy its connection string (the **pooled** one is fine) and add it to the `meso-tracker-api` service in Render as `CONTRIB_DATABASE_URL`. The table is created on first use. Unset = the feature answers 503 and the app backs off for 6 hours.
 3. Optional caps (env, defaults shown): `CONTRIB_MAX_MB=300` (stop accepting at this total; keeps you well inside the free tier) and `CONTRIB_PER_DAY=300` (per licence per day).
 4. Pull the data to your PC with `server/scripts/pull_contrib.py` (needs `CONTRIB_DATABASE_URL` in your shell); `--delete-after` frees space once it is downloaded. The uploader column is a keyed hash; no email or licence id is stored.
+
+## Free trial, no card (5 days)
+
+How it works: the website's "Try it free" form posts the email to `POST /v1/trial`. The server creates a customer, a licence and a `trials` row, and EMAILS the licence key (that email is the verification).
+The 5 days start the first time the app activates with that key, not at sign-up. While it runs, the account shows status `trialing` with the end date; when the days are up `/v1/activate` and `/v1/status` answer
+402 "Your free trial has ended", and the app stops (a running app notices within ~20 minutes: `license/trialwatch.py`). Paying later with the same email keeps the same licence key (no second key).
+
+- **Database:** migration `002_trials.sql` (tables `trials`, `trial_devices`) runs by itself the first time the new server version boots. Nothing to run by hand. To undo a bad deploy, the old server ignores both tables.
+- **Env vars (all optional, in Render):** `TRIAL_DAYS` (default 5), `TRIAL_ENABLED` (`0` switches sign-ups off, the site then shows an error), `TRIAL_PER_IP_PER_DAY` (default 3).
+- **Abuse limits:** one trial per mailbox (`+tags` and gmail dots ignored), one per PC (the app's hashed device id), a few per IP per day, throwaway-mail domains refused (`trials.DISPOSABLE`). It stops the casual repeat, not someone with many mailboxes AND many PCs.
+- **Trial lengths on a running copy:** the session token and the offline grace given to a trial are capped to the time it has left, so a copy that never reaches the server still stops on time.
+- **Look at the trials:** `SELECT c.email, t.created_at, t.started_at, s.current_period_end, s.status FROM trials t JOIN customers c ON c.id=t.customer_id JOIN subscriptions s ON s.stripe_subscription_id='trial_'||t.id::text ORDER BY t.created_at DESC;`
+- **Give someone a fresh trial:** delete their `customers` row (cascades to trials, licences, devices) and let them sign up again.
+- **Old apps (1.3.6 and earlier) work with trials:** they show the server's "trial ended" text as "subscription isn't active", and "Manage billing" opens the pricing page for a trial customer. Only 1.3.7+ shows the trial status, the login-window link and the live end-of-trial check.
+- **Not built (on purpose):** reminder emails before the trial ends (Render's free tier has no scheduler); the app's Account tab shows the days left instead.
