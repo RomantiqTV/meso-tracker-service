@@ -91,6 +91,24 @@ async function startTrial(ev) {
 const trialForm = document.getElementById("trial-form");
 if (trialForm) trialForm.addEventListener("submit", startTrial);
 
+// ---------------------------------------------------------------------------------------------- real-session tour
+// Two real screenshots behind tabs; the numbered markers and the legend only show on wide screens (CSS). Hovering a legend item lifts its marker.
+document.querySelectorAll("[data-tour]").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-tour]").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+    document.querySelectorAll("[data-tour-panel]").forEach((p) => {
+      const on = p.dataset.tourPanel === tab.dataset.tour;
+      p.hidden = !on;
+      p.classList.toggle("is-on", on);
+    });
+  });
+});
+document.querySelectorAll(".tour-legend li").forEach((li) => {
+  const lift = (on) => document.querySelectorAll('.mark[data-n="' + li.dataset.n + '"]').forEach((m) => m.classList.toggle("is-hot", on));
+  li.addEventListener("mouseenter", () => lift(true));
+  li.addEventListener("mouseleave", () => lift(false));
+});
+
 // ---------------------------------------------------------------------------------------------------- nav shrink
 const navEl = document.querySelector("nav");
 if (navEl) {

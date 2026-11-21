@@ -340,7 +340,7 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 
 /* ---------------------------------------------------------------------------------------- real screenshot + tech */
 .proof { background: #ffe9b8; border-top: 3px solid var(--edge-soft); border-bottom: 3px solid var(--edge-soft); }
-.proof-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 56px; align-items: center; }
+.proof-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
 .proof-list { list-style: none; padding: 0; margin: 30px 0 0; display: grid; gap: 18px; }
 .proof-list li { padding-left: 34px; position: relative; color: var(--muted); font-size: 16px; line-height: 1.5; }
 .proof-list li::before {
@@ -352,7 +352,28 @@ nav .btn { white-space: nowrap; padding: 8px 18px !important; font-size: 15px; b
 .shot { margin: 0; }
 .shot img { display: block; width: 100%; height: auto; border: 4px solid var(--bark); border-radius: 14px; box-shadow: 0 10px 0 var(--edge); }
 .shot figcaption { margin-top: 22px; font-size: 14px; color: var(--muted); }
-@media (max-width: 900px) { .proof-grid { grid-template-columns: 1fr; gap: 36px; } }
+@media (min-width: 900px) { .proof-copy .proof-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; } }
+.tour-tabs { display: inline-flex; gap: 6px; padding: 5px; margin-bottom: 18px; background: var(--panel); border: 3px solid var(--bark); border-radius: 14px; box-shadow: 0 4px 0 var(--edge); }
+.tour-tabs button { font-family: var(--ui); font-weight: 600; font-size: 15px; padding: 8px 16px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; }
+.tour-tabs button[aria-selected="true"] { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--bark); box-shadow: inset 0 -2px 0 rgba(184, 90, 10, .35); }
+.tour-tabs button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.tour-shot[hidden] { display: none; }
+.shot-frame { position: relative; }
+.shot-frame .mark, .tour-legend { display: none; }
+@media (min-width: 1000px) {
+  .shot-frame .mark { display: grid; position: absolute; width: 30px; height: 30px; border-radius: 50%; place-items: center; transform: translate(-50%, -50%);
+    font-family: var(--ui); font-weight: 700; font-size: 15px; color: var(--bark); border: 2.5px solid var(--bark);
+    background: radial-gradient(circle at 35% 30%, #fff6c9, var(--gold) 60%, #f0a21d); box-shadow: 0 3px 0 rgba(44, 20, 4, .55); transition: transform .15s; }
+  .shot-frame .mark.m-left::before { content: ""; position: absolute; right: 100%; top: 50%; width: 20px; height: 3px; margin-top: -1.5px; background: var(--gold); border-radius: 2px; box-shadow: 0 0 0 1px var(--bark); }
+  .shot-frame .mark.m-below::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 3px; height: 16px; margin-left: -1.5px; background: var(--gold); border-radius: 2px; box-shadow: 0 0 0 1px var(--bark); }
+  .shot-frame .mark.is-hot { transform: translate(-50%, -50%) scale(1.25); }
+  .tour-legend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; list-style: none; padding: 0; margin: 26px 0 0; }
+  .tour-legend li { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 12px; border: 2px solid transparent; font-size: 14px; line-height: 1.4; color: var(--muted); }
+  .tour-legend li:hover { background: var(--panel); border-color: var(--edge-soft); }
+  .tour-legend b { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; font-family: var(--ui); font-size: 14px; color: var(--bark);
+    border: 2px solid var(--bark); background: radial-gradient(circle at 35% 30%, #fff6c9, var(--gold) 60%, #f0a21d); }
+  .tour-legend strong { display: block; font-family: var(--ui); font-weight: 600; font-size: 16px; color: var(--bark); }
+}
 
 /* -------------------------------------------------------------------------------------------------------- compare */
 .compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -24px; padding: 14px 24px 12px; }
