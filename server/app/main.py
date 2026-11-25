@@ -4,11 +4,11 @@ import logging
 import time
 
 import stripe
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-from . import billing, contrib, db, email, ratelimit, repo, security, trials, versioning
+from . import billing, contrib, db, email, prices, ratelimit, repo, security, trials, versioning
 from .config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -293,6 +293,43 @@ def contrib_delete(authorization: str = Header(default="")):
         raise HTTPException(503, "Contributions are not enabled")
     who = _contrib_who(authorization)
     return {"deleted": store.delete_all(who)}
+
+
+# ---------------------------------------------------------------------------------------------------------------------- shared market price list
+@app.get("/v1/prices")
+def get_market_prices(response: Response, authorization: str = Header(default=""), if_none_match: str = Header(default="")):
+    """The latest market price list (items: name, category, price, npc_buy, npc_sell, sold), for licensed apps only (same session token as /v1/contrib). Sends an
+    ETag, so the app's startup / hourly refresh costs a 304 when nothing changed. 503 until the operator's push has delivered a first list."""
+    who = _contrib_who(authorization)
+    if not ratelimit.allow("prices:" + who, max_per_window=30, window_s=60):
+        raise HTTPException(429, "Too many requests, try again shortly")
+    with db.connect() as conn:
+        row = repo.get_prices(conn.cursor())
+    if not row:
+        raise HTTPException(503, "No price list yet")
+    tag = prices.etag(row["generated_at"], row["item_count"])
+    if if_none_match.strip() == tag:
+        return Response(status_code=304, headers={"ETag": tag})
+    response.headers["ETag"] = tag
+    response.headers["Cache-Control"] = "private, max-age=60"
+    return prices.payload(row["generated_at"], row["items"])
+
+
+@app.post("/v1/admin/prices")
+def push_market_prices(body: dict, x_push_key: str = Header(default="")):
+    """The operator's hourly push (tools/push_prices.py on the PC that holds the meso.watch session): replaces the stored list. Disabled (404) unless
+    PRICES_PUSH_KEY is set in the environment and matches; a list with too few items or too few prices is refused (400), never stored."""
+    import hmac
+    if not settings.prices_push_key or not hmac.compare_digest(x_push_key.encode(), settings.prices_push_key.encode()):
+        raise HTTPException(404)
+    try:
+        generated_at, items = prices.validate_push(body)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    with db.connect() as conn:
+        repo.put_prices(conn.cursor(), generated_at, items)
+        conn.commit()
+    return {"stored": len(items), "generated_at": generated_at.isoformat()}
 
 
 # ---------------------------------------------------------------------------------------------------------------------- one-off admin

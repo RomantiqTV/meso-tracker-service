@@ -63,6 +63,10 @@ class Settings:
         # in Render only for the duration of a specific admin task, then clear it again.
         self.admin_key = os.environ.get("ADMIN_KEY", "")
 
+        # The key the operator's hourly price push sends (X-Push-Key, POST /v1/admin/prices). Separate from ADMIN_KEY so the standing push does not
+        # leave the one-off admin tools switched on. Blank disables the push endpoint (and GET /v1/prices answers 503 until a list exists).
+        self.prices_push_key = os.environ.get("PRICES_PUSH_KEY", "")
+
 
 settings = Settings()
 

@@ -159,3 +159,19 @@ def convert_trial(cur, customer_id):
         (customer_id,),
     )
     return cur.rowcount
+
+
+def put_prices(cur, generated_at, items):
+    """Replaces the one stored market price list."""
+    from psycopg.types.json import Jsonb
+    cur.execute(
+        "INSERT INTO price_snapshot (id, generated_at, received_at, item_count, items) VALUES (1, %s, now(), %s, %s) "
+        "ON CONFLICT (id) DO UPDATE SET generated_at = EXCLUDED.generated_at, received_at = now(), item_count = EXCLUDED.item_count, items = EXCLUDED.items",
+        (generated_at, len(items), Jsonb(items)),
+    )
+
+
+def get_prices(cur):
+    """-> {generated_at, received_at, item_count, items} or None when nothing was ever pushed."""
+    cur.execute("SELECT generated_at, received_at, item_count, items FROM price_snapshot WHERE id = 1")
+    return cur.fetchone()
