@@ -72,6 +72,16 @@ def etag(generated_at, count):
     return f'"{h}"'
 
 
+def etag_matches(if_none_match, tag):
+    """True when an If-None-Match header names `tag`. Render's proxy compresses the body and turns our strong ETag into the weak form W/"..." on the way out, so the
+    client sends the weak form back: compare without the W/ prefix (a weak match is all a GET revalidation needs), and accept a comma-separated list or *."""
+    for part in (if_none_match or "").split(","):
+        part = part.strip()
+        if part == "*" or (part[2:] if part.startswith("W/") else part) == tag:
+            return True
+    return False
+
+
 def payload(generated_at, items):
     return {"generated_at": generated_at.isoformat(), "count": len(items), "items": items}
 

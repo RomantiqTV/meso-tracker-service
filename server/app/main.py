@@ -308,7 +308,7 @@ def get_market_prices(response: Response, authorization: str = Header(default=""
     if not row:
         raise HTTPException(503, "No price list yet")
     tag = prices.etag(row["generated_at"], row["item_count"])
-    if if_none_match.strip() == tag:
+    if prices.etag_matches(if_none_match, tag):
         return Response(status_code=304, headers={"ETag": tag})
     response.headers["ETag"] = tag
     response.headers["Cache-Control"] = "private, max-age=60"

@@ -64,6 +64,17 @@ class ValidateTests(unittest.TestCase):
         self.assertNotEqual(prices.etag(t, 5), prices.etag(t + datetime.timedelta(hours=1), 5))
 
 
+class EtagMatchTests(unittest.TestCase):
+    def test_strong_weak_list_and_star(self):
+        t = '"abc"'
+        self.assertTrue(prices.etag_matches('"abc"', t))
+        self.assertTrue(prices.etag_matches('W/"abc"', t))                 # what a client sends back after Render's proxy weakened the tag
+        self.assertTrue(prices.etag_matches('"zzz", W/"abc"', t))
+        self.assertTrue(prices.etag_matches("*", t))
+        for bad in ("", None, '"abd"', 'W/"abd"', "abc"):
+            self.assertFalse(prices.etag_matches(bad, t), bad)
+
+
 class FakeDb:
     def __init__(self):
         self.row = None
@@ -125,6 +136,11 @@ class RouteTests(unittest.TestCase):
         self.assertEqual((r.status_code, r.content), (304, b""))
         self.push({"generated_at": "2026-11-25T11:00:00Z", "items": rows()})
         self.assertEqual(self.c.get("/v1/prices", headers={**self.h, "If-None-Match": tag}).status_code, 200)
+
+    def test_get_revalidates_with_the_weak_etag_the_proxy_produces(self):
+        self.push()
+        tag = self.c.get("/v1/prices", headers=self.h).headers["etag"]
+        self.assertEqual(self.c.get("/v1/prices", headers={**self.h, "If-None-Match": "W/" + tag}).status_code, 304)
 
     def test_get_needs_a_session(self):
         self.push()
