@@ -70,7 +70,7 @@
       <li><strong>Window mode:</strong> windowed or fullscreen both work. If you change size or switch between them while the overlay runs, it notices within about a second and re-adjusts by itself.</li>
       <li><strong>Pickup feed (right side of the game screen):</strong> mesos, EXP and item pickups are read from the fading lines the game prints there. Keep that area clear of other windows and don&rsquo;t cover it with other programs.</li>
       <li><strong>EXP number:</strong> keep the status bar along the bottom visible, with the EXP number and percentage showing (for example <i>EXP. 16,756 [13.65%]</i>). It is used for EXP/hr and time to level.</li>
-      <li><strong>Quickslots (supplies used):</strong> the overlay watches the stack counts in your 8 quickslots (<b>Q E R T</b> on the top row, <b>Z X C V</b> on the bottom) and counts a use whenever a stack goes down. Put your potions and food there and keep the quickslot bar on screen. Slots holding skills, or empty slots, are simply ignored.</li>
+      <li><strong>Quickslots (supplies used):</strong> the overlay watches the stack counts in your quickslots and counts a use whenever a stack goes down. It reads two rows by default; if your hotbar has a third row, choose <b>3 rows</b> under <a href="#settings">Settings &rsaquo; Gameplay &rsaquo; Quickslot rows</a>. It works whatever keys you have bound. Put your potions and food in the slots and keep the quickslot bar on screen. Slots holding skills, or empty slots, are simply ignored.</li>
       <li><strong>Keep the game visible:</strong> the game window can&rsquo;t be minimised, and other windows shouldn&rsquo;t sit on top of the minimap, feed, quickslots or EXP bar. The overlay itself is hidden from screen capture by default, so it never gets in its own way (see <a href="#settings">Display settings</a>).</li>
       <li><strong>Window size, not monitor size:</strong> the sizes below mean the size of the game&rsquo;s window (its client area), not your monitor. If a size is not on the list, set the game to one that is.</li>
     </ul>
@@ -132,13 +132,13 @@
       <dt>Experience</dt>
       <dd>EXP gained, kills, EXP per hour, level percentage gained per hour, and the estimated time to your next level at the current pace.</dd>
       <dt>Loot</dt>
-      <dd>Mesos picked up and per hour, items picked up, and their total value at NPC sell prices. The list underneath shows every item with its quantity and value. The <b>sort</b> button cycles the list through newest, value, quantity and A-Z; scroll it with the mouse wheel or the arrows. A red <b>Unrecognised</b> row is a line the app wasn&rsquo;t sure about: click it to name the item yourself, and the correction is applied to this run straight away.</dd>
+      <dd>Mesos picked up and per hour, items picked up, and their total value at the prices you chose under <b>Items counted at</b> (see <a href="#settings">Settings &rsaquo; Gameplay</a>). The list underneath shows every item with its quantity and value. The <b>sort</b> button cycles the list through newest, value, quantity and A-Z; scroll it with the mouse wheel or the arrows. A red <b>Unrecognised</b> row is a line the app wasn&rsquo;t sure about: click it to name the item yourself, and the correction is applied to this run straight away.</dd>
       <dt>Supplies used</dt>
       <dd>Each potion or food you used, how many, and what they cost. <b>Potion cost / hour</b> adds them up. Cost is the NPC shop price or market price, whichever you chose in <a href="#settings">Settings &rsaquo; Gameplay</a>.</dd>
       <dt>Net after potions</dt>
       <dd><b>Theoretical gross / hr</b> is your mesos plus everything sold to an NPC. <b>Net after potions / hr</b> subtracts your supply costs. It is the number to compare maps by.</dd>
       <dt>Stacks line</dt>
-      <dd>A small diagnostic: the stack counts it can currently read in your 8 quickslots (a <b>?</b> means nothing was read there), your EXP value, and how long its last full reading took. It is useful when asking for support.</dd>
+      <dd>A small diagnostic: the stack counts it can currently read in your quickslots (a <b>?</b> means nothing was read there), your EXP value, and how long its last full reading took. It is useful when asking for support.</dd>
       <dt>Buttons</dt>
       <dd><b>Pause / Resume</b> stops and restarts counting. <b>Reset</b> needs a second click within three seconds, then starts a fresh run, and everything on screen at that moment is ignored. <b>Save Run</b> writes the run to a file. <b>Runs</b> opens the folder of saved runs. The gear opens Settings.</dd>
       <dt>Moving and resizing</dt>
@@ -167,6 +167,9 @@
       <tbody>
         <tr><td>Quickslot Q (heal) item, Quickslot E (mana) item</td><td>The names of your heal and mana items. The app identifies what is in your slots from their icons; these names are the fallback if it can&rsquo;t.</td></tr>
         <tr><td>Potion cost counted as</td><td><b>NPC shop price</b> values each used potion at what the shop sells it for. <b>Market price</b> uses the going market price.</td></tr>
+        <tr><td>Items counted at</td><td>Which price each picked-up item is valued at. <b>Highest</b> (the default) uses the larger of the vendor price and the market price. <b>Vendor</b> uses the shop sell price only. <b>Market</b> uses the market price, and falls back to the vendor price when an item has no market price. Market prices are what players ask, not guaranteed sales.</td></tr>
+        <tr><td>Fetch current market prices from the Meso Tracker server</td><td>On by default. The app gets a shared market price list when it starts and refreshes it every hour. <b>Update market prices now</b> fetches it straight away.</td></tr>
+        <tr><td>Quickslot rows</td><td><b>2 rows</b> (the default) or <b>3 rows</b>. Choose 3 if your hotbar has a third row on top of the two the overlay always reads, so those slots are counted too. Your key bindings don&rsquo;t matter.</td></tr>
         <tr><td>Reload prices</td><td>Re-reads the price list the app is using. The line above it shows which list and when it was generated.</td></tr>
       </tbody>
     </table>
@@ -187,7 +190,7 @@
     </table>
 
     <h3>Panel</h3>
-    <p>Tick exactly which rows the full panel shows: EXP gained, Kills, EXP / hour, Level % / hour, Time to level, Mesos picked up, Mesos / hour, Items picked up, Item value (NPC), the item list, per-item supply lines, Potion cost / hour, Theoretical gross / hr, and Net after potions / hr. Unticked rows take no space, and a section heading disappears if everything under it is off.</p>
+    <p>Tick exactly which rows the full panel shows: EXP gained, Kills, EXP / hour, Level % / hour, Time to level, Mesos picked up, Mesos / hour, Items picked up, Item value, the item list, per-item supply lines, Potion cost / hour, Theoretical gross / hr, and Net after potions / hr. Unticked rows take no space, and a section heading disappears if everything under it is off.</p>
 
     <h3>Top bar</h3>
     <p>An optional wide strip you can place anywhere on screen, for when you want your numbers visible without the full panel.</p>
@@ -241,6 +244,7 @@
     <h3>Supplies used shows nothing, or the Stacks line has ?</h3>
     <ul>
       <li>The quickslot bar has to be on screen with your potions or food in it.</li>
+      <li>If your hotbar has three rows and the top row isn&rsquo;t counted, set <b>Quickslot rows</b> to 3 in Settings &rsaquo; Gameplay.</li>
       <li>A <b>?</b> means nothing was read in that slot. That&rsquo;s normal for empty slots or slots holding skills.</li>
       <li>Costs show &ldquo;?&rdquo; when the item isn&rsquo;t in the price list. Check the names in Settings &rsaquo; Gameplay.</li>
     </ul>
